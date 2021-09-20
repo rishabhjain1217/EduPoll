@@ -1,2 +1,0 @@
-# EduPoll
-Education Poll
