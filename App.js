@@ -4,11 +4,11 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 import Constants from 'expo-constants';
 
 // You can import from local files
-import AssetExample from './components/AssetExample';
-import ProfSign from './Screens/ProfSign'
+// import AssetExample from './components/AssetExample';
+import ProfSign from './screens/ProfSign'
 
 // or any pure javascript modules available in npm
-import { Card } from 'react-native-paper';
+//import { Card } from 'react-native-paper';
 
 export default function App() {
   return (
