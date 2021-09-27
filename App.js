@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 // You can import from local files
 // import AssetExample from './components/AssetExample';
 import ProfSign from './screens/ProfSign'
+import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
 
 // or any pure javascript modules available in npm
@@ -14,6 +15,7 @@ import CreateAccount from './screens/CreateAccount'
 export default function App() {
   return (
     //<ProfSign/>
+    //<LandingScreen/>
     <CreateAccount/>
   );
 }
