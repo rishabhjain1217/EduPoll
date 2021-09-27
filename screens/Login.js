@@ -8,14 +8,13 @@ export default function App() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
      <View style={styles.container}>
-      <Image source={require("../assets/student_pic.png")} />
+      <Image source={require("../assets/girl_on_laptop.png")} />
         <View style={styles.activate}>
-          <Text style={styles.welcome_message}>Create Student Account</Text>
+          <Text style={styles.welcome_message}>Log in</Text>
           <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
-          <TextInput style={styles.text_box} placeholder="Nickname"/>
           <TextInput style={styles.text_box} placeholder="Password" secureTextEntry={true}/>  
           <View style={styles.button_container}>
-            <Button title='Create Account' color="white"/>
+            <Button title='Login' color="white"/>
           </View>
         </View>    
       </View>

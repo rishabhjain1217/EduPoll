@@ -8,6 +8,7 @@ import Constants from 'expo-constants';
 import ProfSign from './screens/ProfSign'
 import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
+import Login from './screens/Login'
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
@@ -16,7 +17,8 @@ export default function App() {
   return (
     //<ProfSign/>
     //<LandingScreen/>
-    <CreateAccount/>
+    //<CreateAccount/>
+    <Login/>
   );
 }
 
