@@ -6,7 +6,9 @@ import Constants from 'expo-constants';
 // You can import from local files
 // import AssetExample from './components/AssetExample';
 import ProfSign from './screens/ProfSign'
+import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
+import Login from './screens/Login'
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
@@ -14,7 +16,9 @@ import CreateAccount from './screens/CreateAccount'
 export default function App() {
   return (
     //<ProfSign/>
-    <CreateAccount/>
+    //<LandingScreen/>
+    //<CreateAccount/>
+    <Login/>
   );
 }
 

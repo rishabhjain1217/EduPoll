@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   
   },
   activate:{
-    height:556,
+    height: "65%",
     marginTop: 20,
     width: "100%",
     borderRadius:20,
