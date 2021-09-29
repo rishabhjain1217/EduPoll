@@ -40,8 +40,8 @@ export default function App() {
   return (
     //<ProfSign/>
     //<LandingScreen/>
-    //<CreateAccount/>
-    <Login/>
+    <CreateAccount/>
+    //<Login/>
   );
 }
 

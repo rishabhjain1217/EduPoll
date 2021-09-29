@@ -2,9 +2,33 @@ import * as React from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Constants from 'expo-constants';
 import * as firebase from 'firebase' 
+//import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 
 //this is just a test function 
 export default function App() {
+
+  function signInWithEmailPassword() {
+    var email = "test@example.com";
+    var password = "hunter2";
+    // [START auth_signin_password]
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        var user = userCredential.user;
+        console.log("signed in!")
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log('not signed in')
+      });
+    // [END auth_signin_password]
+  }
+
+
+
   function storeQuizScore(userID, score){
     //writes score to database
     console.log("hi")
@@ -26,7 +50,7 @@ export default function App() {
           <TextInput style={styles.text_box} placeholder="Password" secureTextEntry={true}/>  
           <View style={styles.button_container}>
             <Button title='Login' color="white" onPress={()=>{
-              storeQuizScore("TestingUser1", 860)
+              signInWithEmailPassword()
             }}>
               </Button>
           </View>
