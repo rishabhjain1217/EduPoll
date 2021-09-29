@@ -3,13 +3,16 @@ import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedb
 import Constants from 'expo-constants';
 import * as firebase from 'firebase' 
 
+//this is just a test function 
 export default function App() {
   function storeQuizScore(userID, score){
     //writes score to database
     console.log("hi")
     firebase.database().ref('users/'+userID).set(
       {
-        highscore: score
+       oldhighscore: score - 100,
+       newhighscore: score
+       
       }
     )
   }
@@ -23,7 +26,7 @@ export default function App() {
           <TextInput style={styles.text_box} placeholder="Password" secureTextEntry={true}/>  
           <View style={styles.button_container}>
             <Button title='Login' color="white" onPress={()=>{
-              storeQuizScore("TestingUser1", 800)
+              storeQuizScore("TestingUser1", 860)
             }}>
               </Button>
           </View>
