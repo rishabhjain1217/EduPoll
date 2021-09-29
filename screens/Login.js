@@ -1,10 +1,18 @@
 import * as React from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
-
 import Constants from 'expo-constants';
-
+import * as firebase from 'firebase' 
 
 export default function App() {
+  function storeQuizScore(userID, score){
+    //writes score to database
+    console.log("hi")
+    firebase.database().ref('users/'+userID).set(
+      {
+        highscore: score
+      }
+    )
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
      <View style={styles.container}>
@@ -14,7 +22,10 @@ export default function App() {
           <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
           <TextInput style={styles.text_box} placeholder="Password" secureTextEntry={true}/>  
           <View style={styles.button_container}>
-            <Button title='Login' color="white"/>
+            <Button title='Login' color="white" onPress={()=>{
+              storeQuizScore("TestingUser1", 800)
+            }}>
+              </Button>
           </View>
         </View>    
       </View>

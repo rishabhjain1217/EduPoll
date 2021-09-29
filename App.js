@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
-
+import * as firebase from 'firebase'
 import Constants from 'expo-constants';
 
 // You can import from local files
@@ -10,10 +10,33 @@ import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
 import Login from './screens/Login'
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCqDR3uYSrLogtMvojmGm2S_UokXhW08jI",
+  authDomain: "edupoll.firebaseapp.com",
+  projectId: "edupoll",
+  storageBucket: "edupoll.appspot.com",
+  messagingSenderId: "1088830263060",
+  appId: "1:1088830263060:web:847f5bc36cdea0bc9ebc01",
+  measurementId: "G-7910S9FKPM"
+};
+if(firebase.apps.length == 0) {
+firebase.initializeApp(firebaseConfig);
+}
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
 
+
 export default function App() {
+  function storeQuizScore(userID, score){
+    //writes score to database
+    console.log("hi")
+    firebase.database().ref('users/'+userID).set(
+      {
+        highscore: score
+      }
+    )
+  }
+
   return (
     //<ProfSign/>
     //<LandingScreen/>
@@ -21,6 +44,8 @@ export default function App() {
     <Login/>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
