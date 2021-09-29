@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
 import Constants from 'expo-constants';
@@ -9,17 +9,28 @@ import ProfSign from './screens/ProfSign'
 import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
 import Login from './screens/Login'
+import {createStackNavigator} from '@react-navigation/stack'
+import { StackRouter } from 'react-navigation';
+import { NavigationContainer } from '@react-navigation/native';
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
 
-export default function App() {
-  return (
-    //<ProfSign/>
-    //<LandingScreen/>
-    //<CreateAccount/>
-    <Login/>
-  );
+const RootStack = createStackNavigator();
+
+export default class App extends Component {
+  render(){
+    return (
+      <NavigationContainer headerShown={false}>
+        <RootStack.Navigator initialRouteName="Landing"  screenOptions={{headerShown: false}}>
+          <RootStack.Screen name="Landing" component={LandingScreen}
+          />
+          <RootStack.Screen name="Create Account" component={CreateAccount}/>
+          <RootStack.Screen name="Login" component={Login}/>        
+        </RootStack.Navigator>
+      </NavigationContainer>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
