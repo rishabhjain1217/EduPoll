@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
 
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -8,12 +8,17 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default class CreateAccount extends Component{
   render(){
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
         <View style={styles.container}>
-          <TouchableOpacity style={styles.back_arrow} onPress={()=>this.props.navigation.navigate('Landing')}>
-            <Image source={require("../assets/back-arrow.png")} />
-          </TouchableOpacity>
-          <Image source={require("../assets/student_pic.png")} />
+          <View style={styles.back_arrow_container}>
+            <TouchableOpacity style={styles.back_arrow} onPress={()=>{this.props.navigation.navigate('Landing')
+            console.log("back arrow pressed")
+            }}>
+              <Image source={require("../assets/back-arrow.png")} />
+            </TouchableOpacity>
+          </View>
+          <Image style={{zIndex: 1}} source={require("../assets/student_pic.png")} />
           <View style={styles.activate}>
             <Text style={styles.welcome_message}>Create Student Account</Text>
             <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
@@ -40,22 +45,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#6BC7A6',
   
   },
+
+  back_arrow_container: {
+    flex: 1,
+    height: 400,
+    width: '95%',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    zIndex: 10,
+  },
   back_arrow: {
-    position: 'absolute',
-    bottom: -30,
-    right: 120,
+    height: '100%',
+    width: '100%'
   },
   welcome_message: {
     fontWeight: 'bold',
     fontSize: 26,
     textAlign: 'center',
     paddingTop: '10%',
-    paddingBottom: '20%',
+    paddingBottom: '10%',
     paddingLeft: '15%',
     paddingRight: '15%'
   },
   activate: {
-    height: "65%",
+    height: "60%",
     marginTop: 20,
     width: "100%",
     borderRadius:20,
