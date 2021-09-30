@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import Constants from 'expo-constants';
 
 // You can import from local files
@@ -31,16 +31,16 @@ firebase.initializeApp(firebaseConfig);
 const RootStack = createStackNavigator();
 
 export default class App extends Component {
-  function storeQuizScore(userID, score){
-    //writes score to database
-    console.log("hi")
-    firebase.database().ref('users/'+userID).set(
-      {
-        highscore: score
-      }
-    )
-  }
   render(){
+    function storeQuizScore(userID, score){
+      //writes score to database
+      console.log("hi")
+      firebase.database().ref('users/'+userID).set(
+        {
+          highscore: score
+        }
+      )
+    }
     return (
       <NavigationContainer headerShown={false}>
         <RootStack.Navigator initialRouteName="Landing"  screenOptions={{headerShown: false}}>

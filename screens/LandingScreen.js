@@ -1,25 +1,25 @@
 import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 
 
-export default class LandingScreen extends Component{
-  render(){
+export default function App(){
+  const navigation = useNavigation();
     return (
       <View style={styles.container}>
         <Image source={require("../assets/book_logo.png")} marginTop="15%"/>
         <Text style={styles.welcome_message}>Welcome to EduPoll</Text>
         <Text style={styles.help_text}>You can use this app to answer real-time questions that your teachers will ask!</Text>
         <View style={styles.button_container}>
-          <Button title="Create Account" color="white" onPress={()=> this.props.navigation.navigate('Create Account')}/>
+          <Button title="Create Account" color="white" onPress={()=> navigation.navigate('Create Account')}/>
         </View>
         <View style={styles.button_container}>
-          <Button title='Log In' color="white" onPress={()=> this.props.navigation.navigate('Login')}/>
+          <Button title='Log In' color="white" onPress={()=> navigation.navigate('Login')}/>
         </View>  
       </View>
     ) 
-  }
+  
 }
 
 const styles = StyleSheet.create({

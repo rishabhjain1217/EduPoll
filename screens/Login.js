@@ -1,50 +1,52 @@
 import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Constants from 'expo-constants';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
+import { useNavigation } from '@react-navigation/native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-export default class Login extends Component {
-  function signInWithEmailPassword() {
-    var email = "test@example.com";
-    var password = "hunter2";
-    // [START auth_signin_password]
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // Signed in
-        var user = userCredential.user;
-        console.log("signed in!")
-        // ...
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log('not signed in')
-      });
-    // [END auth_signin_password]
-  }
-
-
-
-  function storeQuizScore(userID, score){
-    //writes score to database
-    console.log("hi")
-    firebase.database().ref('users/'+userID).set(
-      {
-       oldhighscore: score - 100,
-       newhighscore: score
-       
-      }
-    )
-  }
-  render(){
+export default function App() {
+  
+    function signInWithEmailPassword() {
+      var email = "test@example.com";
+      var password = "hunter2";
+      // [START auth_signin_password]
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Signed in
+          var user = userCredential.user;
+          console.log("signed in!")
+          // ...
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log('not signed in')
+        });
+      // [END auth_signin_password]
+    }
+  
+  
+  
+    function storeQuizScore(userID, score){
+      //writes score to database
+      console.log("hi")
+      firebase.database().ref('users/'+userID).set(
+        {
+         oldhighscore: score - 100,
+         newhighscore: score
+         
+        }
+      )
+    }
+    const navigation = useNavigation();
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
        <View style={styles.container}>
         <View style={styles.back_arrow_container}>
-          <TouchableOpacity style={styles.back_arrow} onPress={()=>{this.props.navigation.navigate('Landing')
+          <TouchableOpacity style={styles.back_arrow} onPress={()=>{navigation.navigate('Landing')
             console.log("back arrow pressed")
             }}>
             <Image source={require("../assets/back-arrow.png")} />
@@ -65,7 +67,6 @@ export default class Login extends Component {
       </View>
     </TouchableWithoutFeedback> 
     );
-  }
 }
 
 
