@@ -1,11 +1,44 @@
 import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
-
 import Constants from 'expo-constants';
+import * as firebase from 'firebase'
+
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default class Login extends Component {
+  function signInWithEmailPassword() {
+    var email = "test@example.com";
+    var password = "hunter2";
+    // [START auth_signin_password]
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        var user = userCredential.user;
+        console.log("signed in!")
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log('not signed in')
+      });
+    // [END auth_signin_password]
+  }
+
+
+
+  function storeQuizScore(userID, score){
+    //writes score to database
+    console.log("hi")
+    firebase.database().ref('users/'+userID).set(
+      {
+       oldhighscore: score - 100,
+       newhighscore: score
+       
+      }
+    )
+  }
   render(){
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -23,7 +56,10 @@ export default class Login extends Component {
           <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
           <TextInput style={styles.text_box} placeholder="Password" secureTextEntry={true}/>  
           <View style={styles.button_container}>
-            <Button title='Login' color="white"/>
+            <Button title='Login' color="white" onPress={()=>{
+              signInWithEmailPassword()
+            }}>
+              </Button>
           </View>
         </View>    
       </View>
