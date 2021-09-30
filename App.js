@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import * as firebase from 'firebase'
 import Constants from 'expo-constants';
@@ -9,6 +9,9 @@ import ProfSign from './screens/ProfSign'
 import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
 import Login from './screens/Login'
+import {createStackNavigator} from '@react-navigation/stack'
+import { StackRouter } from 'react-navigation';
+import { NavigationContainer } from '@react-navigation/native';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCqDR3uYSrLogtMvojmGm2S_UokXhW08jI",
@@ -25,8 +28,9 @@ firebase.initializeApp(firebaseConfig);
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
 
+const RootStack = createStackNavigator();
 
-export default function App() {
+export default class App extends Component {
   function storeQuizScore(userID, score){
     //writes score to database
     console.log("hi")
@@ -36,13 +40,18 @@ export default function App() {
       }
     )
   }
-
-  return (
-    //<ProfSign/>
-    //<LandingScreen/>
-    <CreateAccount/>
-    //<Login/>
-  );
+  render(){
+    return (
+      <NavigationContainer headerShown={false}>
+        <RootStack.Navigator initialRouteName="Landing"  screenOptions={{headerShown: false}}>
+          <RootStack.Screen name="Landing" component={LandingScreen}
+          />
+          <RootStack.Screen name="Create Account" component={CreateAccount}/>
+          <RootStack.Screen name="Login" component={Login}/>        
+        </RootStack.Navigator>
+      </NavigationContainer>
+    );
+  }
 }
 
 

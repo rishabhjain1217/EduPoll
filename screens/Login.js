@@ -1,13 +1,12 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Constants from 'expo-constants';
-import * as firebase from 'firebase' 
-//import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import * as firebase from 'firebase'
+
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-//this is just a test function 
-export default function App() {
-
+export default class Login extends Component {
   function signInWithEmailPassword() {
     var email = "test@example.com";
     var password = "hunter2";
@@ -40,10 +39,18 @@ export default function App() {
       }
     )
   }
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-     <View style={styles.container}>
-      <Image source={require("../assets/girl_on_laptop.png")} />
+  render(){
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+       <View style={styles.container}>
+        <View style={styles.back_arrow_container}>
+          <TouchableOpacity style={styles.back_arrow} onPress={()=>{this.props.navigation.navigate('Landing')
+            console.log("back arrow pressed")
+            }}>
+            <Image source={require("../assets/back-arrow.png")} />
+          </TouchableOpacity>
+        </View>
+        <Image source={require("../assets/girl_on_laptop.png")} />
         <View style={styles.activate}>
           <Text style={styles.welcome_message}>Log in</Text>
           <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
@@ -57,7 +64,8 @@ export default function App() {
         </View>    
       </View>
     </TouchableWithoutFeedback> 
-  )
+    );
+  }
 }
 
 
@@ -71,6 +79,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#6BC7A6',
   
   },
+  back_arrow_container: {
+    flex: 1,
+    height: 400,
+    width: '95%',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    zIndex: 10,
+  },
+  back_arrow: {
+    height: '100%',
+    width: '100%'
+  },
   welcome_message: {
     fontWeight: 'bold',
     fontSize: 26,
@@ -81,7 +101,7 @@ const styles = StyleSheet.create({
     paddingRight: '15%'
   },
   activate: {
-    height: "65%",
+    height: "60%",
     marginTop: 20,
     width: "100%",
     borderRadius:20,
