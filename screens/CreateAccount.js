@@ -19,6 +19,7 @@ export default function App(){
         .then((userCredential) => {
           // Signed in 
           var user = userCredential.user;
+          // This is where we should add navigation to home page
           // ...
         })
         .catch((error) => {
