@@ -17,7 +17,7 @@ export default function App() {
       <View style={styles.top_container}>
         <Text style={styles.top_message}>EDUPOLL HOME</Text>
       </View>
-      <Image source={require("assets/home.png")} />
+      <Image source={require("../assets/home.png")} />
         <View style={styles.activate}>
           <Text style={styles.welcome_message}>Welcome to our App!</Text>
           <View style={styles.button_container}>
