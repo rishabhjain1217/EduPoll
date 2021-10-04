@@ -10,15 +10,16 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function App(){
   
-    function signUpWithEmailPassword(email) {
+    function signUpWithEmailPassword(email, password) {
       //var email = "test@example.com";
-      console.log(email)
+      print(email, password)
       var password = "hunter2";
       // [START auth_signup_password]
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in 
           var user = userCredential.user;
+          // This is where we should add navigation to home page
           // ...
         })
         .catch((error) => {
@@ -61,7 +62,11 @@ export default function App(){
             onChangeText={password => setPassword(password)}/>  
             <View style={styles.button_container}>
               <Button title='Create Account' color="white" onPress={()=>{
+<<<<<<< HEAD
                 print(email, password)
+=======
+                signUpWithEmailPassword(email, password)
+>>>>>>> 31b9105643f5e04ec6a9bd7e7588bd44b920a25c
 
               }}/>
             </View>
