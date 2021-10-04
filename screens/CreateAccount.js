@@ -1,45 +1,46 @@
 import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 
 
-export default class CreateAccount extends Component{
-  function signUpWithEmailPassword(email) {
-    //var email = "test@example.com";
-    console.log(email)
-    var password = "hunter2";
-    // [START auth_signup_password]
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // Signed in 
-        var user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ..
-      });
-    }
-    function print(email, password) {
-      console.log("email: ", email, " password: ", password);
-    }
-
-
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
-  render(){
+export default function App(){
+  
+    function signUpWithEmailPassword(email, password) {
+      //var email = "test@example.com";
+      print(email, password)
+      var password = "hunter2";
+      // [START auth_signup_password]
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Signed in 
+          var user = userCredential.user;
+          // This is where we should add navigation to home page
+          // ...
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // ..
+        });
+      }
+      function print(email, password) {
+        console.log("email: ", email, " password: ", password);
+      }
+      const [email, setEmail] = React.useState('');
+      const [password, setPassword] = React.useState('');
+      
+      const navigation = useNavigation();
     return (
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
         <View style={styles.container}>
           <View style={styles.back_arrow_container}>
-            <TouchableOpacity style={styles.back_arrow} onPress={()=>{this.props.navigation.navigate('Landing')
+            <TouchableOpacity style={styles.back_arrow} onPress={()=>{navigation.navigate('Landing')
             console.log("back arrow pressed")
             }}>
               <Image source={require("../assets/back-arrow.png")} />
@@ -61,14 +62,15 @@ export default class CreateAccount extends Component{
             onChangeText={password => setPassword(password)}/>  
             <View style={styles.button_container}>
               <Button title='Create Account' color="white" onPress={()=>{
-                print(email, password)
+                signUpWithEmailPassword(email, password)
+
               }}/>
             </View>
           </View>
         </View>
       </TouchableWithoutFeedback> 
     );
-  }
+  
 }
 
 

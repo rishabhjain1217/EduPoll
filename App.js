@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import Constants from 'expo-constants';
 
 // You can import from local files
@@ -8,6 +8,7 @@ import Constants from 'expo-constants';
 import ProfSign from './screens/ProfSign'
 import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
+import HomeScreen from './screens/HomeScreen'
 import Login from './screens/Login'
 import {createStackNavigator} from '@react-navigation/stack'
 import { StackRouter } from 'react-navigation';
@@ -31,23 +32,24 @@ firebase.initializeApp(firebaseConfig);
 const RootStack = createStackNavigator();
 
 export default class App extends Component {
-  function storeQuizScore(userID, score){
-    //writes score to database
-    console.log("hi")
-    firebase.database().ref('users/'+userID).set(
-      {
-        highscore: score
-      }
-    )
-  }
   render(){
+    function storeQuizScore(userID, score){
+      //writes score to database
+      console.log("hi")
+      firebase.database().ref('users/'+userID).set(
+        {
+          highscore: score
+        }
+      )
+    }
     return (
       <NavigationContainer headerShown={false}>
         <RootStack.Navigator initialRouteName="Landing"  screenOptions={{headerShown: false}}>
           <RootStack.Screen name="Landing" component={LandingScreen}
           />
           <RootStack.Screen name="Create Account" component={CreateAccount}/>
-          <RootStack.Screen name="Login" component={Login}/>        
+          <RootStack.Screen name="Login" component={Login}/>  
+          <RootStack.Screen name="Home Screen" component={HomeScreen}/>      
         </RootStack.Navigator>
       </NavigationContainer>
     );
