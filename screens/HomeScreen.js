@@ -5,7 +5,12 @@ import Constants from 'expo-constants';
 
 
 export default function App() {
+    function promptID(){
+        
+    }
+
   return (
+
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
      <View style={styles.container}>
       <View style={styles.top_container}>
