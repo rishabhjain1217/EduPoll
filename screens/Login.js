@@ -9,15 +9,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function App() {
   
-    function signInWithEmailPassword() {
-      var email = "test@example.com";
-      var password = "hunter2";
+    function signInWithEmailPassword(email, password) {
+      print(email, password)
       // [START auth_signin_password]
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
           var user = userCredential.user;
           console.log("signed in!")
+          navigation.navigate('Home Screen')
           // ...
         })
         .catch((error) => {
@@ -27,20 +27,12 @@ export default function App() {
         });
       // [END auth_signin_password]
     }
-  
-  
-  
-    function storeQuizScore(userID, score){
-      //writes score to database
-      console.log("hi")
-      firebase.database().ref('users/'+userID).set(
-        {
-         oldhighscore: score - 100,
-         newhighscore: score
-         
-        }
-      )
+    function print(email, password) {
+      console.log("email: ", email, " password: ", password);
     }
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    
     const navigation = useNavigation();
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -55,12 +47,18 @@ export default function App() {
         <Image source={require("../assets/girl_on_laptop.png")} />
         <View style={styles.activate}>
           <Text style={styles.welcome_message}>Log in</Text>
-          <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
-          <TextInput style={styles.text_box} placeholder="Password" secureTextEntry={true}/>  
+          <TextInput style={styles.text_box} 
+          placeholder="student@email.com" 
+          keyboardType="email-address"
+          onChangeText={email => setEmail(email)}/>
+          <TextInput style={styles.text_box} 
+          placeholder="Password" 
+          secureTextEntry={true}
+          onChangeText={password => setPassword(password)}/>  
           <View style={styles.button_container}>
             <Button title='Login' color="white" onPress={()=>{
-              signInWithEmailPassword()
-              navigation.navigate('Home Screen')
+              signInWithEmailPassword(email, password)
+              
             }}>
               </Button>
           </View>
