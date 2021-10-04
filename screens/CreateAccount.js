@@ -62,11 +62,7 @@ export default function App(){
             onChangeText={password => setPassword(password)}/>  
             <View style={styles.button_container}>
               <Button title='Create Account' color="white" onPress={()=>{
-<<<<<<< HEAD
-                print(email, password)
-=======
                 signUpWithEmailPassword(email, password)
->>>>>>> 31b9105643f5e04ec6a9bd7e7588bd44b920a25c
 
               }}/>
             </View>
