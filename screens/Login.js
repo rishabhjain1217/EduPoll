@@ -60,6 +60,7 @@ export default function App() {
           <View style={styles.button_container}>
             <Button title='Login' color="white" onPress={()=>{
               signInWithEmailPassword()
+              navigation.navigate('Home Screen')
             }}>
               </Button>
           </View>
