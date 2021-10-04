@@ -8,10 +8,10 @@ import Constants from 'expo-constants';
 
 export default function App() {
 
-  function signUpWithEmailPassword(email) {
+  function signUpWithEmailPassword(email, password) {
     //var email = "test@example.com";
-    console.log(email)
-    var password = "hunter2";
+    console.log("email: ", email, " password: ", password);
+    //var password = "hunter2";
     // [START auth_signup_password]
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -51,7 +51,7 @@ export default function App() {
           onChangeText={password => setPassword(password)}/>  
           <View style={styles.button_container}>
             <Button title='Create Account' color="white" onPress={()=>{
-              print(email, password)
+              signUpWithEmailPassword(email, password)
             }}/>
           </View>
         </View>    
