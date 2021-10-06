@@ -2,12 +2,15 @@ import * as React from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 
 import Constants from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function App() {
     function promptID(){
         
     }
+
+  const navigation = useNavigation();
 
   return (
 
@@ -23,7 +26,7 @@ export default function App() {
             <Button title='Take Quiz' color="white"/>
           </View>
           <View style={styles.button_container}>
-            <Button title='Make Quiz' color="white"/>
+            <Button title='Make Quiz' color="white" onPress={()=>navigation.navigate('Create Question')}/>
           </View>
         </View>    
       </View>

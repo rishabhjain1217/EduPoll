@@ -1,5 +1,5 @@
 // You can import from local files
-import AssetExample from './components/AssetExample';
+//import AssetExample from './components/AssetExample';
 
 // or any pure javascript modules available in npm
 import { Card, RadioButton } from 'react-native-paper';
@@ -34,17 +34,17 @@ export default function App() {
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="first" /> 
               <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for First Option" keyboardType="default"/>
-
             </View>
-            <View style={{flexDirection:"row", alignItems: 'center', flex:1}}>
+            
+            <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="second" /> 
               <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Second Option" keyboardType="default"/>
             </View>
-            <View style={{flexDirection:"row", alignItems: 'center', flex:1}}>
+            <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="third" /> 
               <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Third Option" keyboardType="default"/>
             </View>
-            <View style={{flexDirection:"row", alignItems: 'center', flex:1}}>
+            <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="fourth" /> 
               <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Fourth Option" keyboardType="default"/>
             </View>
@@ -115,9 +115,10 @@ const styles = StyleSheet.create({
     paddingRight: '15%'
   },
   rdButton: {
-    width: '80%',
+    width: '100%',
     height: '60%',
-    borderWidth: 10,  
+    borderRadius: 20,
+    borderWidth: 3,  
   },
   individualButton: {
     justifyContent: 'flex-end',

@@ -10,6 +10,7 @@ import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
 import HomeScreen from './screens/HomeScreen'
 import Login from './screens/Login'
+import CreateQuestion from './screens/CreateQuestion'
 import {createStackNavigator} from '@react-navigation/stack'
 import { StackRouter } from 'react-navigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -45,11 +46,11 @@ export default class App extends Component {
     return (
       <NavigationContainer headerShown={false}>
         <RootStack.Navigator initialRouteName="Landing"  screenOptions={{headerShown: false}}>
-          <RootStack.Screen name="Landing" component={LandingScreen}
-          />
+          <RootStack.Screen name="Landing" component={LandingScreen}/>
           <RootStack.Screen name="Create Account" component={CreateAccount}/>
           <RootStack.Screen name="Login" component={Login}/>  
-          <RootStack.Screen name="Home Screen" component={HomeScreen}/>      
+          <RootStack.Screen name="Home Screen" component={HomeScreen}/>    
+          <RootStack.Screen name="Create Question" component={CreateQuestion}/>  
         </RootStack.Navigator>
       </NavigationContainer>
     );
