@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 
 import Constants from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
+import { set } from 'react-native-reanimated';
 
 
 export default function App() {
@@ -9,6 +11,7 @@ export default function App() {
         
     }
 
+  const navigation = useNavigation();
   return (
 
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -23,7 +26,7 @@ export default function App() {
             <Button title='Take Quiz' color="white"/>
           </View>
           <View style={styles.button_container}>
-            <Button title='Make Quiz' color="white"/>
+            <Button title='Make Quiz' color="white" onPress={()=>navigation.navigate('Create Question', {quiz_id: 0, question_number: 1})}/>
           </View>
         </View>    
       </View>
