@@ -43,26 +43,19 @@ export default function App({route}) {
       if(!doc_check.exists){
         break
       }
-      doc_check.catch(function(e){
+      doc_check.catch((e) => {
         console.error(e)
       })
     }
-    
-    if(question_number == 1){
-      await db.collection('quizzes').doc(quiz_id).set({
-        question_array: firebase.firestore.FieldValue.arrayUnion(question)
-      }).catch((e) => {console.error(e)})
+    const data = {
+      correct_array: value,
+      question_array: question,
+      answer_array: [a1,a2,a3,a4]
     }
-    await db.collection('quizzes').doc(quiz_id).update({
-      correct_array: firebase.firestore.FieldValue.arrayUnion(value)
-    }).catch((e) => {console.error(e)})
-    await db.collection('quizzes').doc(quiz_id).update({
-      question_array: firebase.firestore.FieldValue.arrayUnion(question)
-    }).catch((e) => {console.error(e)})
-    db.collection('quizzes').doc(quiz_id).collection('answer_array');
-    await db.collection('quizzes').doc(quiz_id).collection('answer_array').doc(String(question_number)).set({
-      answer_array: firebase.firestore.FieldValue.arrayUnion(a1,a2,a3,a4)
-    }).catch((e) => {console.error(e)})
+    db.collection('quizzes').doc(quiz_id).collection('questions').doc(String(question_number)).set(data)
+    
+
+    
   }
   const navigation = useNavigation();
   return (
@@ -75,6 +68,7 @@ export default function App({route}) {
         <TextInput style={styles.top_message}
          placeholder="Enter Question"
          onChangeText={text => setQuestion(text)}
+         id="question"
          />
       </View>
         <View style={styles.activate}>
@@ -83,26 +77,26 @@ export default function App({route}) {
           <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="first" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for First Option" keyboardType="default"
+              <TextInput id="first answer" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for First Option" keyboardType="default"
               onChangeText={text => setA1(text)}
               />
             </View>
             
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="second" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Second Option" keyboardType="default"
+              <TextInput id="second question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Second Option" keyboardType="default"
               onChangeText={text => setA2(text)}
               />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="third" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Third Option" keyboardType="default"
+              <TextInput id="third question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Third Option" keyboardType="default"
               onChangeText={text => setA3(text)}
               />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="fourth" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Fourth Option" keyboardType="default"
+              <TextInput id="fourth question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Fourth Option" keyboardType="default"
               onChangeText={text => setA4(text)}
               />
             </View>
@@ -111,14 +105,19 @@ export default function App({route}) {
 
           <View style={styles.button_container}>
             <Button title='Next Question' color="white" onPress={()=>{
-              //saveQuestion()
-              navigation.navigate("Create Question")
+              saveQuestion()
+              /*getElementById('question').reset()
+              getElementById('first answer').reset()
+              getElementById('second answer').reset()
+              getElementById('third answer').reset()
+              getElementById('fourth answer').reset()*/
+              navigation.navigate("Create Question", {quiz_id: quiz_id, question_number: question_number+1})
             }}/>
           </View>
           <View style={styles.button_container}>
             <Button title='Finish and Save Quiz' color="white" onPress={()=>{
               saveQuestion()
-              navigation.navigate('Home Screen', {quiz_id: quiz_id, question_number: question_number+1})
+              navigation.navigate('Home Screen')
             }}/>
           </View>
         </View>    
@@ -233,35 +232,3 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-
-{/*<RadioButton
-            value="first"
-            uncheckedColor="#897988"
-            color="#123412"
-            status={ checked === 'first' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('first')}
-          />
-          <RadioButton
-            value="second"
-            status={ checked === 'second' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('second')}
-          />
-          <RadioButton
-            value="third"
-            status={ checked === 'third' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('third')}
-          />
-          <RadioButton
-            value="fourth"
-            status={ checked === 'fourth' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('fourth')}
-          /> 
-          <Text style={{justifyContent: 'flex-end', textAlign: "center"}}>Second</Text>
-
-          */}
-
-       {/*<TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
-          <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
-          <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/>
-          <TextInput style={styles.text_box} placeholder="student@email.com" keyboardType="email-address"/> */}
-  
