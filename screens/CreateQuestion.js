@@ -4,28 +4,78 @@
 // or any pure javascript modules available in npm
 import { Card, RadioButton } from 'react-native-paper';
 //import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import firebase from 'firebase'
 
 
 import * as React from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
 
 import Constants from 'expo-constants';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
-export default function App() {
+//const admin = require('firebase-admin')
+
+/**/
+
+
+export default function App({route}) {
+  var {quiz_id, question_number} = route.params
   const [checked, setChecked] = React.useState('first');
   const [value, setValue] = React.useState('first');
+  const [a1, setA1] = React.useState('');
+  const [a2, setA2] = React.useState('');
+  const [a3, setA3] = React.useState('');
+  const [a4, setA4] = React.useState('');
+  const [question, setQuestion] = React.useState('');
+  const [quizID, setQuizID] = React.useState('0');
 
 
-  return (
+  async function saveQuestion(){
+    const db = firebase.firestore();
     
-
+    console.log("Firebase app quiz 1234: ")
+    while(true){
+      if(quiz_id == 0){
+        quiz_id = String(parseInt(Math.random()*1000000))
+        setQuizID(quiz_id)
+      }
+      const doc_check = await db.collection('quizzes').doc(quiz_id).get()
+      if(!doc_check.exists){
+        break
+      }
+      doc_check.catch(function(e){
+        console.error(e)
+      })
+    }
+    
+    if(question_number == 1){
+      await db.collection('quizzes').doc(quiz_id).set({
+        question_array: firebase.firestore.FieldValue.arrayUnion(question)
+      }).catch((e) => {console.error(e)})
+    }
+    await db.collection('quizzes').doc(quiz_id).update({
+      correct_array: firebase.firestore.FieldValue.arrayUnion(value)
+    }).catch((e) => {console.error(e)})
+    await db.collection('quizzes').doc(quiz_id).update({
+      question_array: firebase.firestore.FieldValue.arrayUnion(question)
+    }).catch((e) => {console.error(e)})
+    db.collection('quizzes').doc(quiz_id).collection('answer_array');
+    await db.collection('quizzes').doc(quiz_id).collection('answer_array').doc(String(question_number)).set({
+      answer_array: firebase.firestore.FieldValue.arrayUnion(a1,a2,a3,a4)
+    }).catch((e) => {console.error(e)})
+  }
+  const navigation = useNavigation();
+  return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
      <View style={styles.container}>
       <View style={styles.top_container}>
         <Text style={styles.top_message}>Quiz Creation</Text>
       </View>
       <View style={styles.question_container}>
-        <TextInput style={styles.top_message} placeholder="Enter Question"></TextInput>
+        <TextInput style={styles.top_message}
+         placeholder="Enter Question"
+         onChangeText={text => setQuestion(text)}
+         />
       </View>
         <View style={styles.activate}>
 
@@ -33,26 +83,43 @@ export default function App() {
           <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="first" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for First Option" keyboardType="default"/>
+              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for First Option" keyboardType="default"
+              onChangeText={text => setA1(text)}
+              />
             </View>
             
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="second" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Second Option" keyboardType="default"/>
+              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Second Option" keyboardType="default"
+              onChangeText={text => setA2(text)}
+              />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="third" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Third Option" keyboardType="default"/>
+              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Third Option" keyboardType="default"
+              onChangeText={text => setA3(text)}
+              />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="fourth" /> 
-              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Fourth Option" keyboardType="default"/>
+              <TextInput style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Fourth Option" keyboardType="default"
+              onChangeText={text => setA4(text)}
+              />
             </View>
           </RadioButton.Group>
         </View>
 
           <View style={styles.button_container}>
-            <Button title='Next Question' color="white"/>
+            <Button title='Next Question' color="white" onPress={()=>{
+              //saveQuestion()
+              navigation.navigate("Create Question")
+            }}/>
+          </View>
+          <View style={styles.button_container}>
+            <Button title='Finish and Save Quiz' color="white" onPress={()=>{
+              saveQuestion()
+              navigation.navigate('Home Screen', {quiz_id: quiz_id, question_number: question_number+1})
+            }}/>
           </View>
         </View>    
       </View>
@@ -80,19 +147,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
     marginTop: '5%',
-    marginBottom: '8%',
+    marginBottom: '5%',
   },
   question_container: {
 
     width: "80%",
-    height: 251,
+    height: 200,
     // top: 160,
     textAlign: "center",
     justifyContent: "center",
 
     backgroundColor: '#FFFFFF',
     borderRadius: 57,
-    marginBottom: '8%'
+    marginBottom: '4%'
     
 
     /*height: 73,
@@ -136,7 +203,7 @@ const styles = StyleSheet.create({
     paddingRight: '15%'
   },
   activate: {
-    height: "50%",
+    height: "60%",
     marginTop: 10,
     width: "100%",
     borderRadius:20,
@@ -163,7 +230,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
     margin: 5,
-    marginTop: 20,
+    marginTop: 10,
   },
 });
 

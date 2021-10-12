@@ -25,7 +25,7 @@ const firebaseConfig = {
   measurementId: "G-7910S9FKPM"
 };
 if(firebase.apps.length == 0) {
-firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 }
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';

@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
+var user = null
 export default function App() {
   
     function signInWithEmailPassword(email, password) {
@@ -15,7 +15,7 @@ export default function App() {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
-          var user = userCredential.user;
+          user = userCredential.user;
           console.log("signed in!")
           navigation.navigate('Home Screen')
           // ...
