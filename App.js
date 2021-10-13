@@ -13,6 +13,8 @@ import Login from './screens/Login'
 import CreateQuestion from './screens/CreateQuestion'
 import FinishQuiz from './screens/FinishQuiz'
 import PollID from './screens/PollID'
+import AnswerQuestion from './screens/AnswerQuestion'
+import CompleteQuiz from './screens/CompleteQuiz'
 import {createStackNavigator} from '@react-navigation/stack'
 import { StackRouter } from 'react-navigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -55,6 +57,8 @@ export default class App extends Component {
           <RootStack.Screen name="Create Question" component={CreateQuestion}/> 
           <RootStack.Screen name="Finish Quiz" component={FinishQuiz}/> 
           <RootStack.Screen name="Poll ID" component={PollID}/>
+          <RootStack.Screen name="Answer Question" component={AnswerQuestion}/>
+          <RootStack.Screen name="Complete Quiz" component={CompleteQuiz}/>
         </RootStack.Navigator>
       </NavigationContainer>
     );

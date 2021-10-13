@@ -24,7 +24,7 @@ function funcForceUpdate(){
 export default function App({route}) {
   var {quiz_id, question_number} = route.params
   const [checked, setChecked] = React.useState('first');
-  const [value, setValue] = React.useState('first');
+  const [value, setValue] = React.useState(1);
   const [a1, setA1] = React.useState('');
   const [a2, setA2] = React.useState('');
   const [a3, setA3] = React.useState('');
@@ -89,7 +89,7 @@ export default function App({route}) {
         <View style={styles.rdButton}>
           <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
-              <RadioButton style={{justifyContent: 'flex-start',}} value="first" /> 
+              <RadioButton style={{justifyContent: 'flex-start',}} value={1} /> 
               <TextInput id="first answer" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for First Option" keyboardType="default"
               onChangeText={text => setA1(text)}
               value={a1}
@@ -97,21 +97,21 @@ export default function App({route}) {
             </View>
             
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
-              <RadioButton style={{justifyContent: 'flex-start',}} value="second" /> 
+              <RadioButton style={{justifyContent: 'flex-start',}} value={2} /> 
               <TextInput id="second question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Second Option" keyboardType="default"
               onChangeText={text => setA2(text)}
               value={a2}
               />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
-              <RadioButton style={{justifyContent: 'flex-start',}} value="third" /> 
+              <RadioButton style={{justifyContent: 'flex-start',}} value={3} /> 
               <TextInput id="third question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Third Option" keyboardType="default"
               onChangeText={text => setA3(text)}
               value={a3}
               />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
-              <RadioButton style={{justifyContent: 'flex-start',}} value="fourth" /> 
+              <RadioButton style={{justifyContent: 'flex-start',}} value={4} /> 
               <TextInput id="fourth question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Fourth Option" keyboardType="default"
               onChangeText={text => setA4(text)} onValueChange
               value={a4}

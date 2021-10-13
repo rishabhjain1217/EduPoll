@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
 import firebase from 'firebase';
 
@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function App(){
-      
+      const [quizID, setQuizID] = useState('');
       const navigation = useNavigation();
     return (
 
@@ -17,7 +17,7 @@ export default function App(){
         <View style={styles.container}>
           <View style={styles.back_arrow_container}>
             <TouchableOpacity style={styles.back_arrow} 
-              onPress={()=>{navigation.navigate('Landing')
+              onPress={()=>{navigation.navigate('Home Screen')
               console.log("back arrow pressed")
             }}>
               <Image source={require("../assets/back-arrow.png")} />
@@ -29,8 +29,14 @@ export default function App(){
             <TextInput 
             style={styles.text_box} 
             placeholder="XXXXXX" 
-            keyboardType="default"/>
+            keyboardType="number-pad"
+            onChangeText={text => setQuizID(text)}
+            />
+            <View style={styles.button_container}>
+            <Button title='Ok!' color="white" onPress={()=> navigation.navigate('Answer Question',{quiz_id: quizID, question_number: 1, current_score: 0})}/>
+            </View>
           </View>
+           
         </View>
       </TouchableWithoutFeedback> 
     );
@@ -66,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     textAlign: 'center',
     paddingTop: '10%',
-    paddingBottom: '10%',
+    paddingBottom: '5%',
     paddingLeft: '15%',
     paddingRight: '15%'
   },
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "grey",
-    margin: '2%',
+    margin: '1%',
     padding: '3%',
 
   },
@@ -94,6 +100,7 @@ const styles = StyleSheet.create({
     height: "12.3%",
     width: "80%",
     borderRadius:20,
+    marginTop: '20%',
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",

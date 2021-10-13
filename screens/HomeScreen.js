@@ -23,7 +23,7 @@ export default function App() {
         <View style={styles.activate}>
           <Text style={styles.welcome_message}>Welcome to our App!</Text>
           <View style={styles.button_container}>
-            <Button title='Take Quiz' color="white"/>
+            <Button title='Take Quiz' color="white" onPress={()=>navigation.navigate('Poll ID')}/>
           </View>
           <View style={styles.button_container}>
             <Button title='Make Quiz' color="white" onPress={()=>navigation.navigate('Create Question', {quiz_id: 0, question_number: 1})}/>
