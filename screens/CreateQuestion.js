@@ -16,7 +16,10 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 //const admin = require('firebase-admin')
 
 /**/
-
+function funcForceUpdate(){
+  const [update, setUpdate] = React.useState(0);
+  return () => setUpdate(update => update + 1)
+}
 
 export default function App({route}) {
   var {quiz_id, question_number} = route.params
@@ -28,12 +31,20 @@ export default function App({route}) {
   const [a4, setA4] = React.useState('');
   const [question, setQuestion] = React.useState('');
   const [quizID, setQuizID] = React.useState('0');
+  const forceUpdate = funcForceUpdate()
+
+  function resetInput(){
+    setQuestion('')
+    setA1('')
+    setA2('')
+    setA3('')
+    setA4('')
+  }
 
 
   async function saveQuestion(){
     const db = firebase.firestore();
     
-    console.log("Firebase app quiz 1234: ")
     while(true){
       if(quiz_id == 0){
         quiz_id = String(parseInt(Math.random()*1000000))
@@ -54,6 +65,7 @@ export default function App({route}) {
     }
     db.collection('quizzes').doc(quiz_id).collection('questions').doc(String(question_number)).set(data)
     
+    
 
     
   }
@@ -69,6 +81,7 @@ export default function App({route}) {
          placeholder="Enter Question"
          onChangeText={text => setQuestion(text)}
          id="question"
+         value={question}
          />
       </View>
         <View style={styles.activate}>
@@ -79,6 +92,7 @@ export default function App({route}) {
               <RadioButton style={{justifyContent: 'flex-start',}} value="first" /> 
               <TextInput id="first answer" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for First Option" keyboardType="default"
               onChangeText={text => setA1(text)}
+              value={a1}
               />
             </View>
             
@@ -86,18 +100,21 @@ export default function App({route}) {
               <RadioButton style={{justifyContent: 'flex-start',}} value="second" /> 
               <TextInput id="second question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Second Option" keyboardType="default"
               onChangeText={text => setA2(text)}
+              value={a2}
               />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="third" /> 
               <TextInput id="third question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Third Option" keyboardType="default"
               onChangeText={text => setA3(text)}
+              value={a3}
               />
             </View>
             <View style={{flexDirection:"row", alignItems: 'center', marginTop: '5%'}}>
               <RadioButton style={{justifyContent: 'flex-start',}} value="fourth" /> 
               <TextInput id="fourth question" style={{justifyContent: 'flex-end', textAlign: "center"}} placeholder="Enter Answer for Fourth Option" keyboardType="default"
-              onChangeText={text => setA4(text)}
+              onChangeText={text => setA4(text)} onValueChange
+              value={a4}
               />
             </View>
           </RadioButton.Group>
@@ -105,19 +122,15 @@ export default function App({route}) {
 
           <View style={styles.button_container}>
             <Button title='Next Question' color="white" onPress={()=>{
-              saveQuestion()
-              /*getElementById('question').reset()
-              getElementById('first answer').reset()
-              getElementById('second answer').reset()
-              getElementById('third answer').reset()
-              getElementById('fourth answer').reset()*/
+              saveQuestion();
+              resetInput();
               navigation.navigate("Create Question", {quiz_id: quiz_id, question_number: question_number+1})
             }}/>
           </View>
           <View style={styles.button_container}>
             <Button title='Finish and Save Quiz' color="white" onPress={()=>{
               saveQuestion()
-              navigation.navigate('Home Screen')
+              navigation.navigate('Finish Quiz', {quiz_id: quiz_id, question_number: question_number+1})
             }}/>
           </View>
         </View>    

@@ -11,6 +11,8 @@ import CreateAccount from './screens/CreateAccount'
 import HomeScreen from './screens/HomeScreen'
 import Login from './screens/Login'
 import CreateQuestion from './screens/CreateQuestion'
+import FinishQuiz from './screens/FinishQuiz'
+import PollID from './screens/PollID'
 import {createStackNavigator} from '@react-navigation/stack'
 import { StackRouter } from 'react-navigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,7 +52,9 @@ export default class App extends Component {
           <RootStack.Screen name="Create Account" component={CreateAccount}/>
           <RootStack.Screen name="Login" component={Login}/>  
           <RootStack.Screen name="Home Screen" component={HomeScreen}/>    
-          <RootStack.Screen name="Create Question" component={CreateQuestion}/>  
+          <RootStack.Screen name="Create Question" component={CreateQuestion}/> 
+          <RootStack.Screen name="Finish Quiz" component={FinishQuiz}/> 
+          <RootStack.Screen name="Poll ID" component={PollID}/>
         </RootStack.Navigator>
       </NavigationContainer>
     );
