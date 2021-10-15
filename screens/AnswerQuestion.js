@@ -12,6 +12,7 @@ import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedb
 
 import Constants from 'expo-constants';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
 
 //const admin = require('firebase-admin')
@@ -83,19 +84,19 @@ export default function App({route}) {
       <View style={styles.question_container}>
         <Text style={styles.top_message}>{question}</Text>
       </View>
-        <View style={styles.activate}>
-        <View style={styles.button_container}>
-          <Button title={a1} color="white" onPress={()=> handleInput(1)}/>
-        </View>
-        <View style={styles.button_container}>
-          <Button title={a2} color="white" onPress={()=> handleInput(2)}/>
-        </View> 
-        <View style={styles.button_container}>
-          <Button title={a3} color="white" onPress={()=> handleInput(3)}/>
-        </View>
-        <View style={styles.button_container}>
-          <Button title={a4} color="white" onPress={()=> handleInput(4)}/>
-        </View>       
+        <View style={styles.activate}>  
+        <TouchableOpacity style={styles.button_container} onPress={()=> handleInput(1)}>
+          <Text style={styles.button_text}>{a1}</Text>
+        </TouchableOpacity> 
+        <TouchableOpacity style={styles.button_container} onPress={()=> handleInput(2)}>
+          <Text style={styles.button_text}>{a2}</Text>
+        </TouchableOpacity> 
+        <TouchableOpacity style={styles.button_container} onPress={()=> handleInput(3)}>
+          <Text style={styles.button_text}>{a3}</Text>
+        </TouchableOpacity> 
+        <TouchableOpacity style={styles.button_container} onPress={()=> handleInput(4)}>
+          <Text style={styles.button_text}>{a4}</Text>
+        </TouchableOpacity>     
         </View>    
       </View>
     </TouchableWithoutFeedback> 
@@ -198,13 +199,18 @@ const styles = StyleSheet.create({
 
   },
   button_container: {
-    height: "12.3%",
-    width: "80%",
+    height: 60,
+    width: 312,
     borderRadius:20,
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: 'center',
     margin: 5,
-    marginTop: 10,
+    marginTop: 20,
   },
+  button_text: {
+    color: "white",
+    fontSize: 18
+  }
 });

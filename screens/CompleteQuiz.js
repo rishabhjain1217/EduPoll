@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default function App({route}){
@@ -13,9 +14,9 @@ export default function App({route}){
         <Text style={styles.welcome_message}>Your Score Is:</Text>
         <Text style={styles.id_text}> {score}/{number_of_questions} </Text>
         <Text style={styles.help_text}>Congrats! You did great!</Text>
-        <View style={styles.button_container}>
-          <Button title='Back to Home' color="white" onPress={()=> navigation.navigate('Home Screen')}/>
-        </View>  
+        <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Home Screen')}>
+          <Text style={styles.button_text}>Back to Home</Text>
+        </TouchableOpacity> 
       </View>
     ) 
   
@@ -45,18 +46,24 @@ const styles = StyleSheet.create({
     paddingBottom: '15%',
   },
   button_container: {
-    height: "8%",
-    width: "80%",
+    height: 60,
+    width: 312,
     borderRadius:20,
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: 'center',
     margin: 5,
+    marginTop: 20,
   },
   id_text: {
       fontWeight: 'bold',
       fontSize: 55,
       textAlign: 'center',
       justifyContent: 'center',
+  },
+  button_text: {
+    color: "white",
+    fontSize: 18
   }
 });
