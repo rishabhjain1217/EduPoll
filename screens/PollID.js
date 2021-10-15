@@ -1,7 +1,6 @@
 import React, {Component, useState} from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
 import firebase from 'firebase';
-
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -9,38 +8,37 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function App(){
-      const [quizID, setQuizID] = useState('');
-      const navigation = useNavigation();
-    return (
 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
-        <View style={styles.container}>
-          <View style={styles.back_arrow_container}>
-            <TouchableOpacity style={styles.back_arrow} 
-              onPress={()=>{navigation.navigate('Home Screen')
-              console.log("back arrow pressed")
-            }}>
-              <Image source={require("../assets/back-arrow.png")} />
-            </TouchableOpacity>
-          </View>
-          <Image style={{zIndex: 1}} source={require("../assets/student_pic.png")} />
-          <View style={styles.activate}>
-            <Text style={styles.welcome_message}>Enter Poll ID</Text>
-            <TextInput 
+  const [quizID, setQuizID] = useState('');
+  const navigation = useNavigation();
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
+      <View style={styles.container}>
+        <View style={styles.back_arrow_container}>
+          <TouchableOpacity style={styles.back_arrow} 
+            onPress={()=>{navigation.navigate('Home Screen')
+            console.log("back arrow pressed")
+          }}>
+            <Image source={require("../assets/back-arrow.png")} />
+          </TouchableOpacity>
+        </View>
+        <Image style={{zIndex: 1}} source={require("../assets/student_pic.png")} />
+        <View style={styles.activate}>
+          <Text style={styles.welcome_message}>Enter Poll ID</Text>
+          <TextInput 
             style={styles.text_box} 
             placeholder="XXXXXX" 
             keyboardType="number-pad"
             onChangeText={text => setQuizID(text)}
-            />
-            <View style={styles.button_container}>
-            <Button title='Ok!' color="white" onPress={()=> navigation.navigate('Answer Question',{quiz_id: quizID, question_number: 1, current_score: 0})}/>
-            </View>
-          </View>
-           
+          />
+          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Answer Question',{quiz_id: quizID, question_number: 1, current_score: 0})}>
+            <Text style={styles.button_text}>Take Quiz</Text>
+          </TouchableOpacity>
         </View>
-      </TouchableWithoutFeedback> 
-    );
-  
+           
+      </View>
+    </TouchableWithoutFeedback> 
+  );
 }
 
 
@@ -97,13 +95,17 @@ const styles = StyleSheet.create({
 
   },
   button_container: {
-    height: "12.3%",
-    width: "80%",
+    height: 61,
+    width: 312,
     borderRadius:20,
-    marginTop: '20%',
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: 'center',
     margin: 5,
+  },
+  button_text: {
+    color: "white",
+    fontSize: 18
   },
 });

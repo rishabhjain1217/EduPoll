@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Our basic polling app where you can create and take quizzes with immediately displayed scores.",
+    "githubUrl": "https://github.com/rishabhjain1217/EduPoll"
   }
 }

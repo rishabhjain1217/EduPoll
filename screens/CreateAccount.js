@@ -61,12 +61,9 @@ export default function App(){
             placeholder="Password" 
             secureTextEntry={true}
             onChangeText={password => setPassword(password)}/>  
-            <View style={styles.button_container}>
-              <Button title='Create Account' color="white" onPress={()=>{
-                signUpWithEmailPassword(email, password)
-
-              }}/>
-            </View>
+            <TouchableOpacity style={styles.button_container} onPress={()=>{signUpWithEmailPassword(email, password)}}>
+              <Text style={styles.button_text}>Create Account</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableWithoutFeedback> 
@@ -128,12 +125,18 @@ const styles = StyleSheet.create({
 
   },
   button_container: {
-    height: "12.3%",
-    width: "80%",
+    height: 60,
+    width: 312,
     borderRadius:20,
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: 'center',
     margin: 5,
+    marginTop: 20,
   },
+  button_text: {
+    color: "white",
+    fontSize: 18
+  }
 });

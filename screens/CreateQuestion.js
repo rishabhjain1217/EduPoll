@@ -1,29 +1,15 @@
-// You can import from local files
-//import AssetExample from './components/AssetExample';
-
-// or any pure javascript modules available in npm
-import { Card, RadioButton } from 'react-native-paper';
-//import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import { RadioButton } from 'react-native-paper';
 import firebase from 'firebase'
-
-
 import * as React from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
-
 import Constants from 'expo-constants';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-//const admin = require('firebase-admin')
 
-/**/
-function funcForceUpdate(){
-  const [update, setUpdate] = React.useState(0);
-  return () => setUpdate(update => update + 1)
-}
-
+//Using routing to pass the current state between screens, where question number updates every navigate
 export default function App({route}) {
   var {quiz_id, question_number} = route.params
-  const [checked, setChecked] = React.useState('first');
   const [value, setValue] = React.useState(1);
   const [a1, setA1] = React.useState('');
   const [a2, setA2] = React.useState('');
@@ -31,8 +17,9 @@ export default function App({route}) {
   const [a4, setA4] = React.useState('');
   const [question, setQuestion] = React.useState('');
   const [quizID, setQuizID] = React.useState('0');
-  const forceUpdate = funcForceUpdate()
+  const navigation = useNavigation();
 
+  //Reset the state of the input, whose values match these respective states
   function resetInput(){
     setQuestion('')
     setA1('')
@@ -45,11 +32,14 @@ export default function App({route}) {
   async function saveQuestion(){
     const db = firebase.firestore();
     
+    //Generate quiz id (0-999999) until an open one is found, unless the quiz ID has already been chosen
+    //This is very scalable should we need more, though it is not the most efficient
     while(true){
       if(quiz_id == 0){
         quiz_id = String(parseInt(Math.random()*1000000))
         setQuizID(quiz_id)
       }
+      //get the quiz document associated with the potential quiz ID
       const doc_check = await db.collection('quizzes').doc(quiz_id).get()
       if(!doc_check.exists){
         break
@@ -58,18 +48,15 @@ export default function App({route}) {
         console.error(e)
       })
     }
+    //Given the question data stored in the state, save the question to firestore
     const data = {
       correct_array: value,
       question_array: question,
       answer_array: [a1,a2,a3,a4]
     }
     db.collection('quizzes').doc(quiz_id).collection('questions').doc(String(question_number)).set(data)
-    
-    
-
-    
   }
-  const navigation = useNavigation();
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
      <View style={styles.container}>
@@ -119,20 +106,20 @@ export default function App({route}) {
             </View>
           </RadioButton.Group>
         </View>
-
-          <View style={styles.button_container}>
-            <Button title='Next Question' color="white" onPress={()=>{
-              saveQuestion();
-              resetInput();
-              navigation.navigate("Create Question", {quiz_id: quiz_id, question_number: question_number+1})
-            }}/>
-          </View>
-          <View style={styles.button_container}>
-            <Button title='Finish and Save Quiz' color="white" onPress={()=>{
-              saveQuestion()
-              navigation.navigate('Finish Quiz', {quiz_id: quiz_id, question_number: question_number+1})
-            }}/>
-          </View>
+          <TouchableOpacity style={styles.button_container} onPress={()=>{
+          saveQuestion();
+          resetInput();
+          navigation.navigate("Create Question", {quiz_id: quiz_id, question_number: question_number+1})
+          }}>
+            <Text style={styles.button_text}>Next Question</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.button_container} onPress={()=>{
+          saveQuestion()
+          navigation.navigate('Finish Quiz', {quiz_id: quiz_id, question_number: question_number+1})
+          }}>
+            <Text style={styles.button_text}>Finish and Save Quiz</Text>
+          </TouchableOpacity>
         </View>    
       </View>
     </TouchableWithoutFeedback> 
@@ -151,6 +138,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#6BC7A6',
   
   },
+  button_text: {
+    color: "white",
+    fontSize: 18
+  },
   top_container: {
     height: 73,
     width: "80%",
@@ -162,27 +153,13 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   question_container: {
-
     width: "80%",
     height: 200,
-    // top: 160,
     textAlign: "center",
     justifyContent: "center",
-
     backgroundColor: '#FFFFFF',
     borderRadius: 57,
-    marginBottom: '4%'
-    
-
-    /*height: 73,
-    width: "80%",
-    borderRadius:57,
-    backgroundColor: "#FFFFFF",
-    textAlign: "center",
-    justifyContent: "center",
-    marginTop: '5%',
-    marginBottom: '8%',*/
-    
+    marginBottom: '4%',
   },
   top_message: {
     fontWeight: 'bold',
@@ -235,12 +212,13 @@ const styles = StyleSheet.create({
 
   },
   button_container: {
-    height: "12.3%",
-    width: "80%",
+    height: 60,
+    width: 312,
     borderRadius:20,
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: 'center',
     margin: 5,
     marginTop: 10,
   },

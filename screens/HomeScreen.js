@@ -4,7 +4,7 @@ import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedb
 import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import { set } from 'react-native-reanimated';
-
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function App() {
     function promptID(){
@@ -22,12 +22,12 @@ export default function App() {
       <Image source={require("../assets/home.png")} />
         <View style={styles.activate}>
           <Text style={styles.welcome_message}>Welcome to our App!</Text>
-          <View style={styles.button_container}>
-            <Button title='Take Quiz' color="white" onPress={()=>navigation.navigate('Poll ID')}/>
-          </View>
-          <View style={styles.button_container}>
-            <Button title='Make Quiz' color="white" onPress={()=>navigation.navigate('Create Question', {quiz_id: 0, question_number: 1})}/>
-          </View>
+          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Poll ID')}>
+            <Text style={styles.button_text}>Take Quiz</Text>
+          </TouchableOpacity> 
+          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Question', {quiz_id: 0, question_number: 1})}>
+            <Text style={styles.button_text}>Make Quiz</Text>
+          </TouchableOpacity>
         </View>    
       </View>
     </TouchableWithoutFeedback> 
@@ -82,13 +82,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
   },
+  button_text: {
+    color: "white",
+    fontSize: 18
+  },
   button_container: {
-    height: "12.3%",
-    width: "80%",
+    height: 60,
+    width: 312,
     borderRadius:20,
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: 'center',
     margin: 5,
     marginTop: 20,
   },

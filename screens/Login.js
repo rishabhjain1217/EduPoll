@@ -3,7 +3,6 @@ import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedb
 import Constants from 'expo-constants';
 import firebase from 'firebase'
 import { useNavigation } from '@react-navigation/native';
-
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 var user = null
@@ -55,13 +54,9 @@ export default function App() {
           placeholder="Password" 
           secureTextEntry={true}
           onChangeText={password => setPassword(password)}/>  
-          <View style={styles.button_container}>
-            <Button title='Login' color="white" onPress={()=>{
-              signInWithEmailPassword(email, password)
-              
-            }}>
-              </Button>
-          </View>
+          <TouchableOpacity style={styles.button_container} onPress={()=>{signInWithEmailPassword(email, password)}}>
+              <Text style={styles.button_text}>Login</Text>
+            </TouchableOpacity>
         </View>    
       </View>
     </TouchableWithoutFeedback> 
@@ -91,12 +86,16 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%'
   },
+  button_text: {
+    color: "white",
+    fontSize: 18
+  },
   welcome_message: {
     fontWeight: 'bold',
     fontSize: 26,
     textAlign: 'center',
-    paddingTop: '10%',
-    paddingBottom: '20%',
+    paddingTop: '5%',
+    paddingBottom: '8%',
     paddingLeft: '15%',
     paddingRight: '15%'
   },
@@ -121,12 +120,14 @@ const styles = StyleSheet.create({
 
   },
   button_container: {
-    height: "12.3%",
-    width: "80%",
+    height: 61,
+    width: 312,
     borderRadius:20,
     backgroundColor: "#399675",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: 'center',
     margin: 5,
+    marginTop: 10,
   },
 });
