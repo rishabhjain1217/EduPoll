@@ -1,25 +1,19 @@
 import * as React from 'react';
-import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
-
+import { Text, View, StyleSheet, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
-import { set } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+//This is just the view containing the homescreen.
 export default function App() {
-    function promptID(){
-        
-    }
-
   const navigation = useNavigation();
   return (
-
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-     <View style={styles.container}>
-      <View style={styles.top_container}>
-        <Text style={styles.top_message}>EDUPOLL HOME</Text>
-      </View>
-      <Image source={require("../assets/home.png")} />
+      <View style={styles.container}>
+        <View style={styles.top_container}>
+          <Text style={styles.top_message}>EDUPOLL HOME</Text>
+        </View>
+        <Image source={require("../assets/home.png")} />
         <View style={styles.activate}>
           <Text style={styles.welcome_message}>Welcome to our App!</Text>
           <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Poll ID')}>
@@ -43,7 +37,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#6BC7A6',
-  
   },
   top_container: {
     height: 73,

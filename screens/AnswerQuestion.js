@@ -1,29 +1,12 @@
-// You can import from local files
-//import AssetExample from './components/AssetExample';
-
-// or any pure javascript modules available in npm
-import { Card, RadioButton } from 'react-native-paper';
-//import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import firebase from 'firebase'
-
-
 import * as React from 'react';
-import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
-
+import { Text, View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Constants from 'expo-constants';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { set } from 'react-native-reanimated';
-
-//const admin = require('firebase-admin')
-
-/**/
-function funcForceUpdate(){
-  const [update, setUpdate] = React.useState(0);
-  return () => setUpdate(update => update + 1)
-}
 
 export default function App({route}) {
+  //State variables
   var {quiz_id, question_number, current_score} = route.params
   const [correct, setCorrect] = React.useState(1);
   const [quizSize, setQuizSize] = React.useState(0);
@@ -32,49 +15,50 @@ export default function App({route}) {
   const [a3, setA3] = React.useState('');
   const [a4, setA4] = React.useState('');
   const [question, setQuestion] = React.useState('');
-  const [quizID, setQuizID] = React.useState('0');
   const navigation = useNavigation();
-
   const db = firebase.firestore();
 
-    db.collection('quizzes').doc(String(quiz_id)).collection('questions').get()
-    .then(snap => {
-        console.log(snap.size)
-        setQuizSize(snap.size)
-    })
-    .catch((e) => console.error(e))
-    //console.log(quiz_id)
-    db.collection('quizzes').doc(quiz_id).collection('questions').doc(String(question_number)).get()
-    .then(documentSnapshot => {
-        //console.log(documentSnapshot.data())
-        setQuestion(documentSnapshot.data().question_array)
-        setA1(documentSnapshot.data().answer_array[0])
-        setA2(documentSnapshot.data().answer_array[1])
-        setA3(documentSnapshot.data().answer_array[2])
-        setA4(documentSnapshot.data().answer_array[3])
-        setCorrect(documentSnapshot.data().correct_array)
-    })
-    .catch((e) => console.error(e))
+  //Promise that returns the questions collection
+  //We should consolidate these to cut down on the number of queries
+  db.collection('quizzes').doc(String(quiz_id)).collection('questions').get()
+  .then(snap => {
+    setQuizSize(snap.size)
+  })
+  .catch((e) => console.error(e))
+
+  //Promise that will return the document corresponding to the question number
+  //Need to add error detection to see if the question is empty or doesn't exist
+  db.collection('quizzes').doc(quiz_id).collection('questions').doc(String(question_number)).get()
+  .then(documentSnapshot => {
+    setQuestion(documentSnapshot.data().question_array)
+    setA1(documentSnapshot.data().answer_array[0])
+    setA2(documentSnapshot.data().answer_array[1])
+    setA3(documentSnapshot.data().answer_array[2])
+    setA4(documentSnapshot.data().answer_array[3])
+    setCorrect(documentSnapshot.data().correct_array)
+  })
+  .catch((e) => console.error(e))
+
+  //Handles the input when a button is pressed, see if the number of the button corresponds to the correct answer
+  //Pushes user results to the next screen using route and pushes to the database if it is the last question.
   function handleInput(button_num){
     const db = firebase.firestore();
     if(button_num == correct){
-        current_score = current_score +1
+      current_score = current_score +1
     }
-    //console.log(quizSize)
     if(question_number != quizSize){
-        navigation.navigate('Answer Question',{quiz_id: quiz_id, question_number: question_number+1, current_score: current_score})
+      navigation.navigate('Answer Question',{quiz_id: quiz_id, question_number: question_number+1, current_score: current_score})
     }else{
-        console.log('Should go back to home screen')
-        db.collection('users').doc(String(firebase.auth().currentUser.uid)).collection('quizzes').doc(String(quiz_id)).set({
-            score: current_score,
-        }).catch((e) => {console.error(e)})
-        console.log('should have saved score')
-        navigation.navigate('Complete Quiz', {score: current_score, number_of_questions: quizSize})
+      console.log('Should go back to home screen')
+      db.collection('users').doc(String(firebase.auth().currentUser.uid)).collection('quizzes').doc(String(quiz_id)).set({
+        score: current_score,
+      }).catch((e) => {console.error(e)})
+      console.log('should have saved score')
+      navigation.navigate('Complete Quiz', {score: current_score, number_of_questions: quizSize})
     }
-
-
   }
   
+  //View for the questions
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
      <View style={styles.container}>

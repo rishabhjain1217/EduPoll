@@ -12,8 +12,8 @@ export default function App({route}){
       <View style={styles.container}>
         <Image source={require("../assets/book_logo.png")} marginTop="15%"/>
         <Text style={styles.welcome_message}>Your Unique Quiz ID is:</Text>
-        <Text style={styles.id_text}> {quiz_id} </Text>
-        <Text style={styles.help_text}>Make sure you write it down for use later!</Text>
+        <Text style={styles.id_text} selectable={true}> {quiz_id} </Text>
+        <Text style={styles.help_text}>Make sure you write it down for use later!{'\n'}You can also copy it if you'd like!</Text>
         <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Home Screen')}>
           <Text style={styles.button_text}>Ok!</Text>
         </TouchableOpacity>  
