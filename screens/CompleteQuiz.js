@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
+//used routing in order to send the score/total ratio.
 export default function App({route}){
     var {score, number_of_questions} = route.params
     const navigation = useNavigation();
