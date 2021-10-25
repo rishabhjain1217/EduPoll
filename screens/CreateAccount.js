@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
+import { Text, View, Button, StyleSheet, Image, TextInput, Alert, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
 import firebase from 'firebase';
 
 import Constants from 'expo-constants';
@@ -9,6 +9,33 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function App(){
+
+    const createTwoButtonAlert = (errorCode) =>
+    {
+
+    var title, subtitle;
+    
+    if (errorCode == "auth/weak-password") {
+      title = "Weak Password"
+      subtitle = "Password must be at least six characters"
+    }
+    else if (errorCode == "auth/invalid-email") {
+      title = "Invalid Email"
+      subtitle = "Please enter a valid email address"
+    }
+    else {
+      title = "Error"
+      subtitle = "Unknown Error"
+    }
+
+    Alert.alert(
+      title,
+      subtitle,
+      [
+        { text: "Try Again", onPress: () => console.log("Trying again") }
+      ]
+    )
+    };
   
     function signUpWithEmailPassword(email, password_input) {
       //var email = "test@example.com";
@@ -25,8 +52,10 @@ export default function App(){
         })
         .catch((error) => {
           var errorCode = error.code;
+          //console.log(errorCode)
           var errorMessage = error.message;
-          // ..
+          createTwoButtonAlert(errorCode);
+          //console.log(errorMessage)
         });
       }
       function print(email, password) {
