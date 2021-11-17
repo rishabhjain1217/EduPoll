@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function App(){
 
-    const createTwoButtonAlert = (errorCode) =>
+    const createOneButtonAlert = (errorCode) =>
     {
 
     var title, subtitle;

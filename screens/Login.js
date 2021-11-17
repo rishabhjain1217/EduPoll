@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { Text, View, Button, StyleSheet, Image, TextInput, Alert, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Constants from 'expo-constants';
 import firebase from 'firebase'
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,23 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 var user = null
 export default function App() {
   
+  const createOneButtonAlert = (errorCode) =>
+  {
+
+  var title, subtitle;
+  title = "Incorrect Email or Password"
+  subtitle = "Please Try Again"
+
+
+  Alert.alert(
+    title,
+    subtitle,
+    [
+      { text: "Try Again", onPress: () => console.log("Trying again") }
+    ]
+  )
+  };
+
     function signInWithEmailPassword(email, password) {
       print(email, password)
       // [START auth_signin_password]
@@ -23,6 +40,7 @@ export default function App() {
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log('not signed in')
+          createOneButtonAlert(errorCode)
         });
       // [END auth_signin_password]
     }
