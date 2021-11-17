@@ -13,7 +13,7 @@ export default function App(){
     const createOneButtonAlert = (errorCode) =>
     {
 
-    var title, subtitle;
+      var title, subtitle;
     
     if (errorCode == "auth/weak-password") {
       title = "Weak Password"
@@ -22,6 +22,10 @@ export default function App(){
     else if (errorCode == "auth/invalid-email") {
       title = "Invalid Email"
       subtitle = "Please enter a valid email address"
+    }
+    else if (errorCode == "auth/email-already-in-use") {
+      title = "Email Already Used"
+      subtitle = "Please log in with existing email address or create an account with a new email address"
     }
     else {
       title = "Error"
@@ -54,7 +58,7 @@ export default function App(){
           var errorCode = error.code;
           //console.log(errorCode)
           var errorMessage = error.message;
-          createTwoButtonAlert(errorCode);
+          createOneButtonAlert(errorCode);
           //console.log(errorMessage)
         });
       }
