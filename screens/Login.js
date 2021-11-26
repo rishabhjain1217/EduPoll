@@ -15,7 +15,6 @@ export default function App() {
   title = "Incorrect Email or Password"
   subtitle = "Please Try Again"
 
-
   Alert.alert(
     title,
     subtitle,
