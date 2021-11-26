@@ -22,7 +22,7 @@ export default function App() {
           <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Question', {quiz_id: 0, question_number: 1})}>
             <Text style={styles.button_text}>Make Quiz</Text>
           </TouchableOpacity>
-        </View>    
+        </View>   
       </View>
     </TouchableWithoutFeedback> 
   )
@@ -67,10 +67,11 @@ const styles = StyleSheet.create({
     paddingRight: '15%'
   },
   activate: {
-    height: "60%",
+    height: "50%",
     marginTop: 10,
     width: "100%",
-    borderRadius:20,
+    borderTopLeftRadius:20,
+    borderTopRightRadius:20,
     backgroundColor: "white",
     justifyContent: "flex-start",
     alignItems: "center",
