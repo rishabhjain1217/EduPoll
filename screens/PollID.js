@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import { Text, View, Button, StyleSheet, Image, Alert, TextInput, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
+import { Text, View, Button, StyleSheet, Image, TextInput, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -11,41 +11,6 @@ export default function App(){
 
   const [quizID, setQuizID] = useState('');
   const navigation = useNavigation();
-  const db = firebase.firestore();
-
-  const createOneButtonAlert = (errorCode) =>
-  {
-
-  var title, subtitle;
-  title = "No Quiz Found"
-  subtitle = "Please try a different ID"
-
-  Alert.alert(
-    title,
-    subtitle,
-    [
-      { text: "Try Again"}//, onPress: () => console.log("Trying again") }
-    ]
-  )
-  };
-
-  function checkID(quizID) {
-     //check if ID exists
-    db.collection('quizzes').doc(String(quizID)).collection('questions').get().then(
-      function (querySnapshot) {
-      if(querySnapshot.empty) {
-        console.log("ID doesn't exist!")
-        createOneButtonAlert()
-      }
-      else{
-        console.log("ID exists!")
-        navigation.navigate('Answer Question',{quiz_id: quizID, question_number: 1, current_score: 0})
-      }
-  })
-
-
-  }
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
       <View style={styles.container}>
@@ -66,7 +31,7 @@ export default function App(){
             keyboardType="number-pad"
             onChangeText={text => setQuizID(text)}
           />
-          <TouchableOpacity style={styles.button_container} onPress={()=> checkID(quizID)}>
+          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Answer Question',{quiz_id: quizID, question_number: 1, current_score: 0})}>
             <Text style={styles.button_text}>Take Quiz</Text>
           </TouchableOpacity>
         </View>
