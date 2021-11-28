@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, TouchableWithoutFeedback, Keyboard, Button} from 'react-native';
+import { Text, View, StyleSheet, Image, Alert, TouchableWithoutFeedback, Keyboard, Button} from 'react-native';
 import Constants from 'expo-constants';
 import firebase from 'firebase';
 
@@ -9,10 +9,45 @@ import { useEffect } from 'react'
 
 //This is just the view containing the homescreen.
 export default function App() {
+
+  const createOneButtonAlert = (errorCode) =>
+    {
+
+      var title, subtitle;
+    
+    if (errorCode == "teacher") {
+      title = "Error"
+      subtitle = "Teachers cannot take quizzes"
+    }
+    else {
+      title = "Error"
+      subtitle = "Students cannot make quizzes"
+    }
+
+    Alert.alert(
+      title,
+      subtitle,
+      [
+        { text: "Try Again", onPress: () => console.log("Trying again") }
+      ]
+    )
+    };
+
   const [classSet, setClassSet] = React.useState(new Set());
   const [update, setUpdate] = React.useState(0);
-
+  const db = firebase.firestore();
   const navigation = useNavigation();
+  var user_class = ""
+  db.collection('users').doc(String(firebase.auth().currentUser.uid)).get().then(function(doc) {
+    if (doc.exists) {
+        user_class = doc.get("user_class")
+        console.log("success", user_class)
+    } else {
+        console.log("No such document!");
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
+});
 
   async function foo() {
     console.log("start")
@@ -51,8 +86,26 @@ export default function App() {
 
   useEffect(() => {if(update == 1) navigation.navigate('HS3', {arr: classSet}), [update, classSet]})
 
+  function tryTakeQuiz(make_or_take) {
+    
+    //console.log("hi", user_class)
+    if(make_or_take == "take" & user_class == "teacher") {
+      console.log("why?")
+      createOneButtonAlert("teacher")
+    }
+    else if(make_or_take == "make" & user_class == "student") {
+      createOneButtonAlert("student")
+    }
+    else if(make_or_take == "make") {
+      navigation.navigate('Create Question', {quiz_id: 0, question_number: 1, className: "General"})
+    }
+    else {
+      navigation.navigate('Poll ID')
+    }
+  }
 
   return (
+
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
         <View style={styles.top_container}>
@@ -61,13 +114,13 @@ export default function App() {
         <Image source={require("../assets/home.png")} />
         <View style={styles.activate}>
           <Text style={styles.welcome_message}>Welcome to our App!</Text>
-          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Poll ID')}>
+          <TouchableOpacity style={styles.button_container} onPress={()=> tryTakeQuiz("take")}>
             <Text style={styles.button_text}>Take Quiz</Text>
           </TouchableOpacity> 
           <TouchableOpacity style={styles.button_container} onPress={() => handleChange()}>
             <Text style={styles.button_text}>Classes</Text>
           </TouchableOpacity> 
-          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Question', {quiz_id: 0, question_number: 1, className: "General"})}>
+          <TouchableOpacity style={styles.button_container} onPress={()=> tryTakeQuiz("make")}>
             <Text style={styles.button_text}>Make Quiz</Text>
           </TouchableOpacity>
         </View>   
