@@ -42,7 +42,6 @@ export default function App(){
     };
     
     const db = firebase.firestore();
-    const user_class = "student"
     const [checkboxState, setCheckboxState] = React.useState(false);
 
     function signUpWithEmailPassword(email, password_input) {
@@ -56,6 +55,15 @@ export default function App(){
           // Signed in 
           var user = userCredential.user;
           console.log("signing in!")
+          //now set in db if it's teacher or student
+          var curr_user_class = "student" 
+          if(checkboxState){
+            curr_user_class = "teacher"
+          }
+          db.collection('users').doc(String(firebase.auth().currentUser.uid)).set({
+            user_class: curr_user_class,
+          }).catch((e) => {console.error(e)})
+          console.log(firebase.auth().currentUser.uid)
           navigation.navigate('Home Screen')
           // ...
         })
