@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, TextInput, Alert, TouchableWithoutFeedback, Keyboard, ImageBackground} from 'react-native';
 import firebase from 'firebase';
-
+import { CheckBox } from 'react-native-elements'
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 
 export default function App(){
@@ -42,11 +42,14 @@ export default function App(){
     };
     
     const db = firebase.firestore();
+    const user_class = "student"
+    const [checkboxState, setCheckboxState] = React.useState(false);
 
     function signUpWithEmailPassword(email, password_input) {
       //var email = "test@example.com";
       var password = password_input;
       print(email, password)
+      console.log(checkboxState)
       // [START auth_signup_password]
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -84,7 +87,17 @@ export default function App(){
           </View>
           <Image style={{zIndex: 1}} source={require("../assets/student_pic.png")} />
           <View style={styles.activate}>
-            <Text style={styles.welcome_message}>Create Student Account</Text>
+            <Text style={styles.welcome_message}>Create Account</Text>
+            <BouncyCheckbox
+        //style={{ marginTop: 8 }}
+        isChecked={checkboxState}
+        text="Teacher Account"
+        disableBuiltInState
+        textStyle={{
+          textDecorationLine: "none",
+        }}
+        onPress={() => setCheckboxState(!checkboxState)}
+      />
             <TextInput 
             style={styles.text_box} 
             placeholder="student@email.com" 
