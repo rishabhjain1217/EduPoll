@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import firebase from 'firebase'
 import Constants from 'expo-constants';
+import { Ionicons } from '@expo/vector-icons';
 
 // You can import from local files
 // import AssetExample from './components/AssetExample';
@@ -17,9 +18,11 @@ import FinishQuiz from './screens/FinishQuiz'
 import PollID from './screens/PollID'
 import AnswerQuestion from './screens/AnswerQuestion'
 import CompleteQuiz from './screens/CompleteQuiz'
+import ProfilePage from './screens/ProfilePage'
 import {createStackNavigator} from '@react-navigation/stack'
 import { StackRouter } from 'react-navigation';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 
 const firebaseConfig = {
   apiKey: "AIzaSyCqDR3uYSrLogtMvojmGm2S_UokXhW08jI",
@@ -55,7 +58,7 @@ export default class App extends Component {
           <RootStack.Screen name="Landing" component={LandingScreen}/>
           <RootStack.Screen name="Create Account" component={CreateAccount}/>
           <RootStack.Screen name="Login" component={Login}/>  
-          <RootStack.Screen name="Home Screen" component={HomeScreen}/>    
+          <RootStack.Screen name="Home Screen" component={HomeTabs}/>    
           <RootStack.Screen name="Create Question" component={CreateQuestion}/> 
           <RootStack.Screen name="Finish Quiz" component={FinishQuiz}/> 
           <RootStack.Screen name="Poll ID" component={PollID}/>
@@ -63,11 +66,40 @@ export default class App extends Component {
           <RootStack.Screen name="Complete Quiz" component={CompleteQuiz}/>
           <RootStack.Screen name="HS3" component={HS3}/>
           <RootStack.Screen name="Grades" component={Grades}/>
+          <RootStack.Screen name="Profile Page" component={HomeTabs}/>
         </RootStack.Navigator>
       </NavigationContainer>
     );
   }
 }
+
+const Tab = createBottomTabNavigator();
+function HomeTabs(){
+  return (
+    <Tab.Navigator initialRouteName="Home"
+    screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarActiveTintColor: '#6BC7A6',
+      tabBarInactiveTintColor: 'gray',
+      tabBarIcon: ({ color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = 'home';
+        } else if (route.name === 'Profile') {
+          iconName = 'person';
+        }
+
+        // You can return any component that you like here!
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },      
+    })}>
+      <Tab.Screen name="Home" component={HomeScreen}/>
+      <Tab.Screen name="Profile" component={ProfilePage}/>
+    </Tab.Navigator>
+  )
+}
+
 
 
 
