@@ -2,21 +2,19 @@ import React, {Component} from 'react';
 import { Text, View, Button, StyleSheet, Image, TouchableOpacity, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
+import firebase from 'firebase'
 
 
 export default function App(){
   const navigation = useNavigation();
+  user = firebase.auth().currentUser
+  email = user.email
     return (
       <View style={styles.container}>
-        <Image source={require("../assets/book_logo.png")} marginTop="15%"/>
-        <Text style={styles.welcome_message}>Welcome to EduPoll</Text>
-        <Text style={styles.help_text}>You can use this app to answer real-time questions that your teachers will ask!</Text>
-        <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Account')}>
-          <Text style={styles.button_text}>Create Account</Text>
-        </TouchableOpacity> 
-        <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Login')}>
-          <Text style={styles.button_text}>Log In</Text>
-        </TouchableOpacity> 
+        <Text style={styles.title}>Your Profile</Text>
+        <Text style={styles.subtext_bold}>User Email: </Text>
+        <Text style={styles.subtext}>{email}</Text>
+        <Text style={styles.subtext_bold}>User Classes: </Text>
       </View>
     ) 
   
@@ -30,6 +28,26 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#F2F2F2',
   
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 40,
+    alignSelf: 'flex-start',
+    paddingTop: '10%',
+    paddingLeft: '5%',
+  },
+  subtext:{
+    fontSize: 18,
+    alignSelf: 'flex-start',
+    paddingTop: '1%',
+    paddingLeft: '5%',
+  },
+  subtext_bold:{
+    fontWeight: 'bold',
+    fontSize: 18,
+    alignSelf: 'flex-start',
+    paddingTop: '5%',
+    paddingLeft: '5%',
   },
   welcome_message: {
     fontWeight: 'bold',
