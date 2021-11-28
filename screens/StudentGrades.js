@@ -22,13 +22,13 @@ export default function App() {
 
     var quizClasses = new Set();
 
-    var quiz = db.collection("quizzes").where("owner", "==", currUser);
+    var quiz = db.collection("users").doc(currUser).collection("quizzes");
     try {
         var allQuizSnapShot = await quiz.get();
         allQuizSnapShot.forEach(doc => {
-            console.log(doc.id, '----=>', doc.get("class"));
-            quizClasses.add(doc.get("class"));
-            console.log("for Each run", quizClasses)
+            console.log(doc.id, '----=>', doc.get("score"));
+            quizClasses.add((doc.id + '----=>' + doc.get("score")));
+            //console.log("for Each run", quizClasses)
             //setClassSet(quizClasses => [...quizClasses, doc.get("class")]);
         });
         setClassSet(classSet => [...classSet, quizClasses]);
@@ -67,10 +67,10 @@ export default function App() {
           <TouchableOpacity style={styles.button_container} onPress={() => handleChange()}>
             <Text style={styles.button_text}>Classes</Text>
           </TouchableOpacity> 
-          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Question', {quiz_id: 0, question_number: 1, className: "General"})}>
+          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Question', {quiz_id: 0, question_number: 1, className: "General", owner: firebase.auth().currentUser.uid})}>
             <Text style={styles.button_text}>Make Quiz</Text>
           </TouchableOpacity>
-        </View>   
+        </View>    
       </View>
     </TouchableWithoutFeedback> 
   )
@@ -124,11 +124,10 @@ const styles = StyleSheet.create({
     paddingRight: '15%'
   },
   activate: {
-    height: "50%",
+    height: "60%",
     marginTop: 10,
     width: "100%",
-    borderTopLeftRadius:20,
-    borderTopRightRadius:20,
+    borderRadius:20,
     backgroundColor: "white",
     justifyContent: "flex-start",
     alignItems: "center",
