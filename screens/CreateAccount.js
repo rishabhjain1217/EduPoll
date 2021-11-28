@@ -40,9 +40,7 @@ export default function App(){
       ]
     )
     };
-    
-    const db = firebase.firestore();
-
+  
     function signUpWithEmailPassword(email, password_input) {
       //var email = "test@example.com";
       var password = password_input;
@@ -95,8 +93,7 @@ export default function App(){
             style={styles.text_box} 
             placeholder="Password" 
             secureTextEntry={true}
-            onChangeText={password => setPassword(password)}/> 
-
+            onChangeText={password => setPassword(password)}/>  
             <TouchableOpacity style={styles.button_container} onPress={()=>{signUpWithEmailPassword(email, password)}}>
               <Text style={styles.button_text}>Create Account</Text>
             </TouchableOpacity>

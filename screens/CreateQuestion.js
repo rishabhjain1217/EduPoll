@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 //Using routing to pass the current state between screens, where question number updates every navigate
 export default function App({route}) {
-  var {quiz_id, question_number, className, owner} = route.params
+  var {quiz_id, question_number} = route.params
   const [value, setValue] = React.useState(1);
   const [a1, setA1] = React.useState('');
   const [a2, setA2] = React.useState('');
@@ -54,12 +54,7 @@ export default function App({route}) {
       question_array: question,
       answer_array: [a1,a2,a3,a4]
     }
-    const fieldData = {
-      class: className,
-      owner: owner
-    }
     db.collection('quizzes').doc(quiz_id).collection('questions').doc(String(question_number)).set(data)
-    db.collection('quizzes').doc(quiz_id).set(fieldData)
   }
 
   return (

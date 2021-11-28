@@ -1,57 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, TouchableWithoutFeedback, Keyboard, Button} from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Constants from 'expo-constants';
-import firebase from 'firebase';
-
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useEffect } from 'react'
 
 //This is just the view containing the homescreen.
 export default function App() {
-  const [classSet, setClassSet] = React.useState(new Set());
-  const [update, setUpdate] = React.useState(0);
-
   const navigation = useNavigation();
-
-  async function foo() {
-    console.log("start")
-    const db = firebase.firestore();
-    var currUser = firebase.auth().currentUser.uid
-    console.log(currUser)
-
-    var quizClasses = new Set();
-
-    var quiz = db.collection("quizzes").where("owner", "==", currUser);
-    try {
-        var allQuizSnapShot = await quiz.get();
-        allQuizSnapShot.forEach(doc => {
-            console.log(doc.id, '----=>', doc.get("class"));
-            quizClasses.add(doc.get("class"));
-            console.log("for Each run", quizClasses)
-            //setClassSet(quizClasses => [...quizClasses, doc.get("class")]);
-        });
-        setClassSet(classSet => [...classSet, quizClasses]);
-        //useEffect(() => console.log(classSet), [classSet])
-        console.log("endinnnngggg")
-        //return
-    }
-    catch (err) {
-        console.log('Error getting documents', err);
-    }
-    setUpdate(1)
-    //useEffect(() => {if(classSet) setUpdate(1), [classSet]})
-    return
-  }
-
-  async function handleChange(){
-    await foo()
- 
-  }
-
-  useEffect(() => {if(update == 1) navigation.navigate('HS3', {arr: classSet}), [update, classSet]})
-
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
@@ -64,10 +19,7 @@ export default function App() {
           <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Poll ID')}>
             <Text style={styles.button_text}>Take Quiz</Text>
           </TouchableOpacity> 
-          <TouchableOpacity style={styles.button_container} onPress={() => handleChange()}>
-            <Text style={styles.button_text}>Classes</Text>
-          </TouchableOpacity> 
-          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Question', {quiz_id: 0, question_number: 1, className: "General"})}>
+          <TouchableOpacity style={styles.button_container} onPress={()=> navigation.navigate('Create Question', {quiz_id: 0, question_number: 1})}>
             <Text style={styles.button_text}>Make Quiz</Text>
           </TouchableOpacity>
         </View>    
@@ -79,15 +31,6 @@ export default function App() {
 
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'black',
-  },
   container: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -145,6 +88,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: 'center',
     margin: 5,
-    marginTop: 10,
+    marginTop: 20,
   },
 });

@@ -9,10 +9,8 @@ import ProfSign from './screens/ProfSign'
 import LandingScreen from './screens/LandingScreen'
 import CreateAccount from './screens/CreateAccount'
 import HomeScreen from './screens/HomeScreen'
-import HS3 from './screens/HomeScreen3'
 import Login from './screens/Login'
 import CreateQuestion from './screens/CreateQuestion'
-import Grades from './screens/StudentGrades'
 import FinishQuiz from './screens/FinishQuiz'
 import PollID from './screens/PollID'
 import AnswerQuestion from './screens/AnswerQuestion'
@@ -61,8 +59,6 @@ export default class App extends Component {
           <RootStack.Screen name="Poll ID" component={PollID}/>
           <RootStack.Screen name="Answer Question" component={AnswerQuestion}/>
           <RootStack.Screen name="Complete Quiz" component={CompleteQuiz}/>
-          <RootStack.Screen name="HS3" component={HS3}/>
-          <RootStack.Screen name="Grades" component={Grades}/>
         </RootStack.Navigator>
       </NavigationContainer>
     );
