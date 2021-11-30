@@ -6,23 +6,51 @@ import firebase from 'firebase'
 
 
 export default function App(){
+  const [user_class, setUserClass] = React.useState('');
+  const [nickname, setUserNickname] = React.useState()
+
   const navigation = useNavigation();
   user = firebase.auth().currentUser
   email = user.email
+  const db = firebase.firestore();
+  db.collection('users').doc(String(user.uid)).get().then(function(doc) {
+    if (doc.exists) {
+        setUserClass(doc.get("user_class"))
+        setUserNickname(doc.get("user_nickname"))
+        console.log("success", user_class)
+    } else {
+        console.log("No such document!");
+    }
+  }).catch(function(error) {
+    console.log("Error getting document:", error);
+  });
+  
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Your Profile</Text>
-        <Text style={styles.subtext_bold}>User Email: </Text>
+        <Text style={styles.subtext_bold}>Nickname: </Text>
+        <Text style={styles.subtext}>{nickname}</Text>
+        <Text style={styles.subtext_bold}>Email: </Text>
         <Text style={styles.subtext}>{email}</Text>
-        <Text style={styles.subtext_bold}>User Classes: </Text>
+        <Text style={styles.subtext_bold}>User Type: </Text>
+        <Text style={styles.subtext}>{user_class == 'student' ? 'Student' : 'Teacher'}</Text>
+        <View style={{height: '40%'}}/>
+        <TouchableOpacity style={styles.button_container} onPress={()=>{firebase.auth().signOut(); navigation.navigate("Landing")}}>
+          <Text style={styles.button_text}>Logout</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button_container} onPress={()=>{}}>
+          <Text style={styles.button_text}>Export Student Data</Text>
+        </TouchableOpacity>        
       </View>
     ) 
   
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems:'center',
     paddingTop: Constants.statusBarHeight,
@@ -33,7 +61,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 40,
     alignSelf: 'flex-start',
-    paddingTop: '10%',
+    paddingTop: '7%',
     paddingLeft: '5%',
   },
   subtext:{
