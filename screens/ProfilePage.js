@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { Text, View, Button, StyleSheet, Image, TouchableOpacity, } from 'react-native';
+import React from 'react';
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, SectionList, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import firebase from 'firebase'
@@ -7,7 +7,8 @@ import firebase from 'firebase'
 
 export default function App(){
   const [user_class, setUserClass] = React.useState('');
-  const [nickname, setUserNickname] = React.useState()
+  const [nickname, setUserNickname] = React.useState('');
+  const [quiz_array, setQuizArray] = React.useState([])
 
   const navigation = useNavigation();
   user = firebase.auth().currentUser
@@ -17,6 +18,7 @@ export default function App(){
     if (doc.exists) {
         setUserClass(doc.get("user_class"))
         setUserNickname(doc.get("user_nickname"))
+        //setQuizArray(doc.get('quizzes'))
         console.log("success", user_class)
     } else {
         console.log("No such document!");
@@ -24,6 +26,7 @@ export default function App(){
   }).catch(function(error) {
     console.log("Error getting document:", error);
   });
+
   
     return (
       <View style={styles.container}>
@@ -34,7 +37,15 @@ export default function App(){
         <Text style={styles.subtext}>{email}</Text>
         <Text style={styles.subtext_bold}>User Type: </Text>
         <Text style={styles.subtext}>{user_class == 'student' ? 'Student' : 'Teacher'}</Text>
-        <View style={{height: '40%'}}/>
+        <Text style={styles.subtext_bold}>Grades:</Text>
+        <SectionList
+          style={styles.scroll_screen}
+          sections={[
+            {data: quiz_array}
+          ]}
+          renderItem={({item}) => <Text style={styles.subtext}>{item}</Text>}
+          keyExtractor={(item, index) => index}
+        />
         <TouchableOpacity style={styles.button_container} onPress={()=>{firebase.auth().signOut(); navigation.navigate("Landing")}}>
           <Text style={styles.button_text}>Logout</Text>
         </TouchableOpacity>
@@ -104,5 +115,9 @@ const styles = StyleSheet.create({
   button_text: {
     color: "white",
     fontSize: 18
+  },
+  scroll_screen:{
+    alignSelf: "flex-start",
+    width: "100%",
   }
 });
