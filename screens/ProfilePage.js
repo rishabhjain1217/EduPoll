@@ -1,8 +1,10 @@
 import React from 'react';
+import * as Sharing from 'expo-sharing'
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, SectionList, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import firebase from 'firebase'
+import { ScreenStackHeaderConfig } from 'react-native-screens';
 
 
 export default function App(){
@@ -39,6 +41,9 @@ export default function App(){
   }).catch(function(error) {
     console.log("Error getting document:", error);
   });
+  function export_student_data(){
+    return;
+  }
   
     return (
       <View style={styles.container}>
