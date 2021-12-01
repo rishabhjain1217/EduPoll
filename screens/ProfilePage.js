@@ -18,7 +18,6 @@ export default function App(){
     if (doc.exists) {
         setUserClass(doc.get("user_class"))
         setUserNickname(doc.get("user_nickname"))
-        //setQuizArray(doc.get('quizzes'))
         console.log("success", user_class)
     } else {
         console.log("No such document!");
@@ -27,6 +26,19 @@ export default function App(){
     console.log("Error getting document:", error);
   });
 
+  db.collection('users').doc(String(user.uid)).collection('quizzes').get().then(function(snap) {
+    snap.docs.forEach((doc) => {
+      str = String(doc.id + ':       '+doc.data().score)
+      if(!quiz_array.includes(str)){
+        var current_doc  = quiz_array.slice()
+        current_doc.push(str)
+        setQuizArray(current_doc)
+        console.log('Shouldve added '+str)
+      }
+    })
+  }).catch(function(error) {
+    console.log("Error getting document:", error);
+  });
   
     return (
       <View style={styles.container}>
@@ -41,7 +53,7 @@ export default function App(){
         <SectionList
           style={styles.scroll_screen}
           sections={[
-            {data: quiz_array}
+            {data: (user_class == "student" ? quiz_array : ["Teachers Cannot Take Quizzes"])}
           ]}
           renderItem={({item}) => <Text style={styles.subtext}>{item}</Text>}
           keyExtractor={(item, index) => index}
