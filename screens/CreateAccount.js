@@ -62,6 +62,7 @@ export default function App(){
           }
           db.collection('users').doc(String(firebase.auth().currentUser.uid)).set({
             user_class: curr_user_class,
+            user_nickname: nickname,
           }).catch((e) => {console.error(e)})
           console.log(firebase.auth().currentUser.uid)
           navigation.navigate('Home Screen')
@@ -80,6 +81,7 @@ export default function App(){
       }
       var [email, setEmail] = React.useState('');
       var [password, setPassword] = React.useState('');
+      var [nickname, setNickname] = React.useState('No nickname set');
       
       const navigation = useNavigation();
     return (
@@ -111,7 +113,9 @@ export default function App(){
             placeholder="student@email.com" 
             keyboardType="email-address" 
             onChangeText={email => setEmail(email)}/>
-            <TextInput style={styles.text_box} placeholder="Nickname"/>
+            <TextInput style={styles.text_box} placeholder="Nickname"
+            onChangeText={nickname => setNickname(nickname)}
+            />
             <TextInput 
             style={styles.text_box} 
             placeholder="Password" 
