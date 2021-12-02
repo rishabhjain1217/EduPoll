@@ -1,10 +1,11 @@
 import React from 'react';
 import * as Sharing from 'expo-sharing'
+import XLSX from 'xlsx'
+import * as FileSystem from 'expo-file-system'
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, SectionList, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import firebase from 'firebase'
-import { ScreenStackHeaderConfig } from 'react-native-screens';
 
 
 export default function App(){
@@ -41,8 +42,62 @@ export default function App(){
   }).catch(function(error) {
     console.log("Error getting document:", error);
   });
-  function export_student_data(){
-    return;
+  async function export_student_data(){
+    var teacher_query = db.collection("quizzes").where("owner", "==", user.uid);
+    var export_list = [];
+    var stud_obj_list = [];
+    var doc_list = [];
+    try{
+      var teacher_snapshot = await teacher_query.get()
+      console.log(teacher_snapshot.docs)
+      var quiz_snapshot = await db.collection("users").where("user_class", "==", "student").get()
+      
+      quiz_snapshot.forEach(student => {
+        var student_obj = {'Name' : student.id};
+        student.ref.collection('quizzes').get().then(quizzes =>{
+          console.log(quizzes.docs)
+          quizzes.forEach(quiz => {
+            student_obj[quiz.id] = quiz.data()["score"]
+
+
+          })
+          //console.log(student_obj)
+        }).catch(function(error) {
+          console.log("Error getting document:", error);
+        });
+        //console.log('here')
+        
+        stud_obj_list.push(student_obj)
+      })
+      
+      console.log(stud_obj_list)
+      
+      //console.log(stud_obj_list)
+      teacher_snapshot.forEach(doc => {
+        if(!doc_list.includes(doc)){
+          
+          doc_list.push(doc)
+          export_list.push({
+            
+          })
+        }
+      });
+    }catch{
+
+    }
+    var worksheet = XLSX.utils.json_to_sheet(export_list)
+    var workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Grades")
+
+    const workbook_out = XLSX.write(workbook, {
+      type: 'base64',
+      bookType: 'xlsx'
+    })
+    const uri = FileSystem.cacheDirectory + email + '_grades.xlsx'
+    await FileSystem.writeAsStringAsync(uri, workbook_out, {
+      encoding: FileSystem.EncodingType.Base64
+    })
+    await Sharing.shareAsync(uri)
   }
   
     return (
@@ -66,7 +121,11 @@ export default function App(){
         <TouchableOpacity style={styles.button_container} onPress={()=>{firebase.auth().signOut(); navigation.navigate("Landing")}}>
           <Text style={styles.button_text}>Logout</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button_container} onPress={()=>{}}>
+        <TouchableOpacity style={styles.button_container} onPress={()=>{
+          if(user_class == "teacher"){
+            export_student_data();
+          }
+        }}>
           <Text style={styles.button_text}>Export Student Data</Text>
         </TouchableOpacity>        
       </View>
