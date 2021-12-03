@@ -49,43 +49,38 @@ export default function App(){
     var doc_list = [];
     try{
       var teacher_snapshot = await teacher_query.get()
-      console.log(teacher_snapshot.docs)
       var quiz_snapshot = await db.collection("users").where("user_class", "==", "student").get()
-      
-      quiz_snapshot.forEach(student => {
+      for(var student of quiz_snapshot.docs){
         var student_obj = {'Name' : student.id};
-        student.ref.collection('quizzes').get().then(quizzes =>{
-          console.log(quizzes.docs)
-          quizzes.forEach(quiz => {
-            student_obj[quiz.id] = quiz.data()["score"]
-
-
-          })
-          //console.log(student_obj)
-        }).catch(function(error) {
-          console.log("Error getting document:", error);
-        });
-        //console.log('here')
-        
-        stud_obj_list.push(student_obj)
-      })
-      
-      console.log(stud_obj_list)
-      
-      //console.log(stud_obj_list)
-      teacher_snapshot.forEach(doc => {
-        if(!doc_list.includes(doc)){
-          
-          doc_list.push(doc)
-          export_list.push({
-            
-          })
+        var quizzes = await student.ref.collection('quizzes').get()
+        for(var quiz of quizzes.docs) {
+          student_obj[quiz.id] = quiz.data()["score"]
         }
-      });
+        stud_obj_list.push(student_obj)
+      }
+      
+      teacher_quiz_ids = [];
+      for(var quiz of teacher_snapshot.docs){
+        teacher_quiz_ids.push(quiz.id)
+        for(var student of stud_obj_list){
+          if(!Object.keys(student).includes(quiz.id)){
+            student[quiz.id] = 'N/A'
+          }
+        }
+      }
+      for(var student of stud_obj_list){
+        for(var attr of Object.keys(student)){
+          if(attr != 'Name' && !teacher_quiz_ids.includes(attr)){
+            console.log('Should have deleted: '+attr+" from "+student.Name)
+            delete student[attr];
+          }
+        }
+      }
+      console.log(stud_obj_list)
     }catch{
 
     }
-    var worksheet = XLSX.utils.json_to_sheet(export_list)
+    var worksheet = XLSX.utils.json_to_sheet(stud_obj_list)
     var workbook = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(workbook, worksheet, "Grades")
 
