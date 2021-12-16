@@ -76,9 +76,6 @@ export default function App(){
           //console.log(errorMessage)
         });
       }
-      function print(email, password) {
-        console.log("email: ", email, " password: ", password);
-      }
       var [email, setEmail] = React.useState('');
       var [password, setPassword] = React.useState('');
       var [nickname, setNickname] = React.useState('No nickname set');
