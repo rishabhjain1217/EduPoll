@@ -43,9 +43,6 @@ export default function App() {
         });
       // [END auth_signin_password]
     }
-    function print(email, password) {
-      console.log("email: ", email, " password: ", password);
-    }
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     
